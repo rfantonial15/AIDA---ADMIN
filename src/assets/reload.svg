@@ -1,0 +1,19 @@
+<svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="19" height="19" fill="#1E1E1E"/>
+<g id="4. Reports" clip-path="url(#clip0_201_403)">
+<rect width="1920" height="1080" transform="translate(-1059 -212)" fill="#F5F6FA"/>
+<g id="Filter">
+<rect id="Card" x="-533.7" y="-20.7" width="650.233" height="57.4" rx="9.7" fill="#F9F9FB" stroke="#D5D5D5" stroke-width="0.6"/>
+<g id="Reset Filter">
+<g id="ic-replay-24px">
+<path id="Path" d="M10 3V0L6.25 3.75L10 7.5V4.5C12.4825 4.5 14.5 6.5175 14.5 9C14.5 11.4825 12.4825 13.5 10 13.5C7.5175 13.5 5.5 11.4825 5.5 9H4C4 12.315 6.685 15 10 15C13.315 15 16 12.315 16 9C16 5.685 13.315 3 10 3Z" fill="#EF3826"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_201_403">
+<rect width="1920" height="1080" fill="white" transform="translate(-1059 -212)"/>
+</clipPath>
+</defs>
+</svg>

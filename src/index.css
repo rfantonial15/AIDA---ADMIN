@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Adjusted CSS for the Report component */
+.filter-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    height: 58px;
+    width: 100%;
+    max-width: 640px; /* Adjust max-width as needed */
+    margin-bottom: 20px;
+  }
+  
+  .filter-card select,
+  .filter-card button {
+    flex: 1;
+  }
+  
+  .search-bar-container {
+    position: relative;
+    height: 58px;
+    width: 100%;
+    max-width: 592.211px; /* Adjust max-width as needed */
+    margin-left: 90px; /* Adjust margin as needed */
+  }
+  
+  .search-bar-container input {
+    width: calc(100% - 30px); /* Adjust width as needed */
+    padding: 10px;
+    padding-left: 40px; /* Ensure enough space for the search icon */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+  }
+  
+  .search-bar-container .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+  }
+  
