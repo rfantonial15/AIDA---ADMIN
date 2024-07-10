@@ -72,7 +72,7 @@ const UserManagement = () => {
 
   return (
     <div className="p-8">
-      <h1 className="font-bold text-3xl text-green-700 mb-8">Reports</h1>
+      <h1 className="font-bold text-3xl text-green-700 mb-8">User Management</h1>
       <div className="overflow-x-auto">
         <div className="flex justify-between mb-4">
           <div className="filter-card">
