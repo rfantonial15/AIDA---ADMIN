@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faExpandArrowsAlt, faTimes, faPaperclip, faLink, faImage, faTrashAlt, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -11,12 +11,13 @@ const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/r
 const AlertMessage = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedRecipient, setSelectedRecipient] = useState('Recipients');
+  const [selectedRecipients, setSelectedRecipients] = useState([]);
   const [alertMessage, setAlertMessage] = useState('');
   const [uploadedImage, setUploadedImage] = useState(null);
   const [attachedFiles, setAttachedFiles] = useState([]);
   const [attachedLinks, setAttachedLinks] = useState([]);
   const [showWarning, setShowWarning] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -25,6 +26,19 @@ const AlertMessage = () => {
       window.gapi.load('client:auth2', initClient);
     };
     document.body.appendChild(script);
+
+    // Event listener to handle clicks outside the dropdown
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const initClient = () => {
@@ -81,8 +95,23 @@ const AlertMessage = () => {
   };
 
   const handleRecipientSelect = (recipient) => {
-    setSelectedRecipient(recipient);
-    setDropdownOpen(false);
+    setSelectedRecipients((prev) => {
+      if (recipient === 'All') {
+        return prev.includes('All') ? [] : ['All'];
+      } else {
+        if (prev.includes('All')) {
+          return [recipient];
+        } else if (prev.includes(recipient)) {
+          return prev.filter((r) => r !== recipient);
+        } else {
+          return [...prev, recipient];
+        }
+      }
+    });
+  };
+
+  const handleRemoveRecipient = (recipient) => {
+    setSelectedRecipients((prev) => prev.filter((r) => r !== recipient));
   };
 
   const handleAlertMessageChange = (e) => {
@@ -116,7 +145,7 @@ const AlertMessage = () => {
 
   const handleSendAlert = () => {
     // Add logic to send the alert
-    console.log(`Alert sent to ${selectedRecipient}: ${alertMessage}`);
+    console.log(`Alert sent to ${selectedRecipients.join(', ')}: ${alertMessage}`);
     setAlertMessage('');
     setUploadedImage(null);
     setAttachedFiles([]);
@@ -125,7 +154,7 @@ const AlertMessage = () => {
   };
 
   const handleClose = () => {
-    navigate('/send-alert');
+    navigate('/sendalert');
   };
 
   const handleMinimize = () => {
@@ -151,43 +180,58 @@ const AlertMessage = () => {
           </div>
         </div>
         <div className="p-6">
-          <div className="relative inline-block text-left mb-4">
-            <button 
-              className="flex justify-start items-center w-full h-9 px-6 bg-green-200 text-gray-700 rounded" 
-              onClick={toggleDropdown}
-              style={{
-                width: '248px',
-                height: '37px',
-                padding: '9px 23px',
-                borderRadius: '5px',
-                background: '#D9EAD9'
-              }}
-            >
-              {selectedRecipient}
-            </button>
-            {dropdownOpen && (
-              <div 
-                className="absolute mt-2 w-62 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10 overflow-y-auto"
+          <div className="flex items-center mb-4">
+            <div className="relative inline-block text-left" ref={dropdownRef}>
+              <button 
+                className="flex justify-start items-center w-full h-9 px-6 bg-green-200 text-gray-700 rounded" 
+                onClick={toggleDropdown}
                 style={{
                   width: '248px',
-                  height: '200px',
+                  height: '37px',
+                  padding: '9px 23px',
                   borderRadius: '5px',
-                  background: '#F3F7FF',
+                  background: '#D9EAD9'
                 }}
               >
-                <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                  {recipients.map((recipient) => (
-                    <a
-                      key={recipient}
-                      href="#"
-                      onClick={() => handleRecipientSelect(recipient)}
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                      role="menuitem"
-                    >
-                      {recipient}
-                    </a>
-                  ))}
+                {selectedRecipients.length > 0 ? 'Selected Recipients' : 'Recipients'}
+              </button>
+              {dropdownOpen && (
+                <div 
+                  className="absolute mt-2 w-62 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10 overflow-y-auto"
+                  style={{
+                    width: '248px',
+                    height: '200px',
+                    borderRadius: '5px',
+                    background: '#F3F7FF',
+                  }}
+                >
+                  <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    {recipients.map((recipient) => (
+                      <a
+                        key={recipient}
+                        href="#"
+                        onClick={() => handleRecipientSelect(recipient)}
+                        className={`block px-4 py-2 text-gray-700 hover:bg-gray-100 ${selectedRecipients.includes(recipient) ? 'bg-gray-200' : ''}`}
+                        role="menuitem"
+                      >
+                        {recipient}
+                      </a>
+                    ))}
+                  </div>
                 </div>
+              )}
+            </div>
+            {selectedRecipients.length > 0 && (
+              <div className="ml-4 flex flex-wrap">
+                {selectedRecipients.map((recipient) => (
+                  <div 
+                    key={recipient} 
+                    className="px-4 py-2 m-1 bg-gray-200 text-gray-700 rounded cursor-pointer" 
+                    onClick={() => handleRemoveRecipient(recipient)}
+                  >
+                    {recipient}
+                  </div>
+                ))}
               </div>
             )}
           </div>
