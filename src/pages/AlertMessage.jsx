@@ -125,7 +125,7 @@ const AlertMessage = () => {
   };
 
   const handleClose = () => {
-    navigate('/sendalert');
+    navigate('/send-alert');
   };
 
   const handleMinimize = () => {
@@ -167,9 +167,10 @@ const AlertMessage = () => {
             </button>
             {dropdownOpen && (
               <div 
-                className="absolute mt-2 w-62 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10"
+                className="absolute mt-2 w-62 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10 overflow-y-auto"
                 style={{
                   width: '248px',
+                  height: '200px',
                   borderRadius: '5px',
                   background: '#F3F7FF',
                 }}
