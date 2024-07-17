@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faExpandArrowsAlt, faTimes, faPaperclip, faLink, faImage, faTrashAlt, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import AlertModal from '../components/alertmodal'; // Adjust the path as needed
 
 const CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
 const API_KEY = 'YOUR_API_KEY';
@@ -17,6 +18,7 @@ const AlertMessage = () => {
   const [attachedFiles, setAttachedFiles] = useState([]);
   const [attachedLinks, setAttachedLinks] = useState([]);
   const [showWarning, setShowWarning] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -151,10 +153,11 @@ const AlertMessage = () => {
     setAttachedFiles([]);
     setAttachedLinks([]);
     setShowWarning(false);
+    setIsModalOpen(true);
   };
 
   const handleClose = () => {
-    navigate('/sendalert');
+    navigate('/send-alert');
   };
 
   const handleMinimize = () => {
@@ -165,6 +168,11 @@ const AlertMessage = () => {
   const handleExpand = () => {
     // Implement expand functionality
     console.log("Expand clicked");
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    navigate('/send-alert'); // navigate back to SendAlert page
   };
 
   return (
@@ -314,6 +322,8 @@ const AlertMessage = () => {
           </div>
         </div>
       </div>
+
+      <AlertModal show={isModalOpen} handleClose={handleCloseModal} />
     </div>
   );
 };
