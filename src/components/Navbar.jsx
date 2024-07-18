@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../assets/AIDA-Logo.png';
-import DashboardLogo from '../assets/dashboard-line.png';
-import DashboardLogoGreen from '../assets/dashboard-line-green.png';
-import ReportLogo from '../assets/report-line.png';
-import ReportLogoGreen from '../assets/report-line-green.png';
-import UserLogo from '../assets/user-line.png';
-import UserLogoGreen from '../assets/user-line-green.png';
-import AlertLogo from '../assets/alert-line.png';
-import AlertLogoGreen from '../assets/alert-line-green.png';
-import SettingLogo from '../assets/setting-line.png';
-import SettingLogoGreen from '../assets/setting-line-green.png';
-import LogoutLogo from '../assets/logout-line.png';
+import DashboardLogo from '../assets/navbar/dashboard-line.png';
+import DashboardLogoGreen from '../assets/navbar/dashboard-line-green.png';
+import ReportLogo from '../assets/navbar/report-line.png';
+import ReportLogoGreen from '../assets/navbar/report-line-green.png';
+import UserLogo from '../assets/navbar/user-line.png';
+import UserLogoGreen from '../assets/navbar/user-line-green.png';
+import AlertLogo from '../assets/navbar/alert-line.png';
+import AlertLogoGreen from '../assets/navbar/alert-line-green.png';
+import SettingLogo from '../assets/navbar/setting-line.png';
+import SettingLogoGreen from '../assets/navbar/setting-line-green.png';
+import LogoutLogo from '../assets/navbar/logout-line.png';
 
 const Navbar = ({ children }) => {
   const [dateTime, setDateTime] = useState(new Date());

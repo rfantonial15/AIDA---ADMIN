@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 import PendingAlerts from '../assets/dashboard/Pending Alerts Icon.svg';
 import TotalAlerts from '../assets/dashboard/Total Alerts Icon.svg';
 import TotalReports from '../assets/dashboard/Total Report Icon.svg';
@@ -7,6 +9,7 @@ import TrendDown from '../assets/dashboard/trending-down.svg';
 import TrendUp from '../assets/dashboard/trending-up.svg';
 import CarCrashIcon from '../assets/dashboard/Car.svg';
 import FireIcon from '../assets/dashboard/Fire.svg';
+import Image from '../assets/dashboard/accidentimage.png';
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -16,6 +19,9 @@ const Dashboard = () => {
   const [nameFilter, setNameFilter] = useState('');
   const [incidentFilter, setIncidentFilter] = useState('');
   const [monthFilter, setMonthFilter] = useState('');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,8 +33,9 @@ const Dashboard = () => {
             incident: 'Fire',
             location: '123 Main St',
             reporter: 'John Doe',
-            status: 'Done',
-            icon: FireIcon
+            status: 'Pending',
+            icon: FireIcon,
+            image: Image
           },
           {
             date: '04-27-34',
@@ -37,7 +44,8 @@ const Dashboard = () => {
             location: '456 Elm St',
             reporter: 'Jane Smith',
             status: 'Pending',
-            icon: CarCrashIcon
+            icon: CarCrashIcon,
+            image: Image
           },
         ];
         setUsers(mockUsers);
@@ -68,6 +76,28 @@ const Dashboard = () => {
     setNameFilter('');
     setIncidentFilter('');
     setMonthFilter('');
+  };
+
+  const openModal = (user) => {
+    setSelectedUser(user);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedUser(null);
+  };
+
+  const viewDetails = () => {
+    if (selectedUser) {
+      navigate(`/reports`, { state: { user: selectedUser } });
+    }
+  };
+
+  const toggleStatus = (index) => {
+    const updatedUsers = [...users];
+    updatedUsers[index].status = updatedUsers[index].status === 'Pending' ? 'Done' : 'Pending';
+    setUsers(updatedUsers);
   };
 
   return (
@@ -172,20 +202,51 @@ const Dashboard = () => {
             <tbody>
               {filteredUsers.map((user, index) => (
                 <tr key={index} className="hover:bg-gray-100 border-b-2">
-                  <td className="px-4 py-6 text-left flex items-center">
+                  <td className="px-4 py-6 text-left flex items-center" onClick={() => openModal(user)}>
                     <img src={user.icon} alt={`${user.incident} Icon`} className="w-6 h-6 mr-3"/>
                     {user.incident}
                   </td>
-                  <td className="px-4 py-2 text-left">{user.location}</td>
-                  <td className="px-4 py-2 text-left">{`${user.date} - ${user.time}`}</td>
-                  <td className="px-4 py-2 text-left">{user.reporter}</td>
-                  <td className="px-4 py-2 text-center">{user.status}</td>
+                  <td className="px-4 py-2 text-left" onClick={() => openModal(user)}>{user.location}</td>
+                  <td className="px-4 py-2 text-left" onClick={() => openModal(user)}>{`${user.date} - ${user.time}`}</td>
+                  <td className="px-4 py-2 text-left" onClick={() => openModal(user)}>{user.reporter}</td>
+                  <td className="px-4 py-2 text-center relative">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleStatus(index);
+                      }}
+                      className={`px-2 py-1 rounded ${user.status === 'Done' ? 'bg-green-500' : 'bg-yellow-500'} text-white`}
+                    >
+                      {user.status}
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+
+      {selectedUser && (
+        <Modal 
+          isOpen={modalIsOpen} 
+          onRequestClose={closeModal}
+          className="flex justify-center items-center fixed top-0 left-0 w-full h-full z-50 overflow-auto bg-white bg-opacity-60"
+          overlayClassName="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40"
+        >
+          <div className="bg-red-600 text-white rounded-lg overflow-hidden max-w-md mx-auto my-auto">
+            <div className="p-8 text-center">
+              <img src={selectedUser.image} alt={selectedUser.incident} className="w-full rounded-lg object-cover" />
+              <h2 className="pt-3 text-xl font-bold">{selectedUser.incident.toUpperCase()} ACCIDENT</h2>
+              <p className="text-sm font-semibold mt-2">{selectedUser.location}</p>
+              <p className="text-xs font-thin">Reporter: {selectedUser.reporter}</p>
+              <button onClick={viewDetails} className="mt-4 px-36 py-2 bg-white text-red-600 rounded-md font-semibold">
+                View Details
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };
