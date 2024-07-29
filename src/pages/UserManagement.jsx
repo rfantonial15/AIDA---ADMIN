@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
-import filterIcon from "../assets/filter.svg";
+import filterIcon from "../assets/Filter.svg";
+import DeleteModal from "../components/deletemodal"; // Adjust the path as needed
+import DoneDeleteModal from "../components/donedelete"; // Adjust the path as needed
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -10,12 +12,13 @@ const UserManagement = () => {
   const [dateFilter, setDateFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
   const [incidentFilter, setIncidentFilter] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDoneDeleteModal, setShowDoneDeleteModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    // Simulating fetching data (replace with actual API call)
     const fetchData = async () => {
       try {
-        // Mock data until API integration
         const mockUsers = [
           {
             id: "001",
@@ -25,7 +28,6 @@ const UserManagement = () => {
             phone: 9058329729,
             barangay: "Poblacion",
             date: "06-18-24",
-            incident: "Car Crash",
             manage: "Delete",
           },
           {
@@ -36,7 +38,6 @@ const UserManagement = () => {
             phone: 9058329729,
             barangay: "Taytay",
             date: "06-19-24",
-            incident: "Crime",
             manage: "Delete",
           },
         ];
@@ -50,7 +51,6 @@ const UserManagement = () => {
   }, []);
 
   useEffect(() => {
-    // Filter users based on selected filters
     const filteredData = users.filter(
       (user) =>
         user.firstname.toLowerCase().includes(filter.toLowerCase()) &&
@@ -64,7 +64,6 @@ const UserManagement = () => {
   }, [filter, dateFilter, nameFilter, incidentFilter, users]);
 
   const resetFilters = () => {
-    // Reset all filters
     setFilter("");
     setDateFilter("");
     setNameFilter("");
@@ -72,16 +71,28 @@ const UserManagement = () => {
   };
 
   const handleDeleteUser = (userId) => {
-    // Implement delete functionality here (e.g., API call to delete user)
     console.log(`Deleting user with ID: ${userId}`);
-    // Update state or perform any necessary actions
+    setUsers(users.filter(user => user.id !== userId));
+    setShowDeleteModal(false);
+    setShowDoneDeleteModal(true);
+  };
+
+  const handleShowDeleteModal = (user) => {
+    setSelectedUser(user);
+    setShowDeleteModal(true);
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
+  };
+
+  const handleContinue = () => {
+    setShowDoneDeleteModal(false);
   };
 
   return (
     <div className="p-8">
-      <h1 className="font-bold text-3xl text-green-700 mb-8">
-        User Management
-      </h1>
+      <h1 className="font-bold text-3xl text-green-700 mb-8">User Management</h1>
       <div className="">
         <div className="flex justify-between items-center mb-4 space-x-2">
           <div className="filter-card flex items-center border rounded-lg bg-white">
@@ -138,24 +149,13 @@ const UserManagement = () => {
           </div>
           <div className="pb-6">
             <div className="flex items-center border border-gray-300 rounded-md px-4 py-2 bg-white">
-              <svg
-                className="w-6 h-6 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-4.35-4.35M16 10a6 6 0 11-12 0 6 6 0 0112 0z"
-                />
-              </svg>
+              <FontAwesomeIcon icon={faSearch} className="text-gray-400 w-6 h-6" />
               <input
                 type="text"
                 className="ml-2 outline-none w-full pr-52"
                 placeholder="Search"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
               />
             </div>
           </div>
@@ -185,9 +185,9 @@ const UserManagement = () => {
                   <td className="px-4 py-2 text-center">
                     <button
                       className="px-3 py-1 bg-red-500 text-white rounded"
-                      onClick={() => handleDeleteUser(user.id)}
+                      onClick={() => handleShowDeleteModal(user)}
                     >
-                      Freeze
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -196,13 +196,17 @@ const UserManagement = () => {
           </table>
         </div>
       </div>
-      <div className="flex justify-between items-center mt-4">
-        <div>Showing 1-2 of 2</div>
-        <div className="flex items-center">
-          <button className="border p-2 mr-2 rounded">&lt;</button>
-          <button className="border p-2 rounded">&gt;</button>
-        </div>
-      </div>
+      <DeleteModal
+        show={showDeleteModal}
+        user={selectedUser}
+        onConfirmDelete={handleDeleteUser}
+        onCancel={handleCancelDelete}
+      />
+      <DoneDeleteModal
+        show={showDoneDeleteModal}
+        user={selectedUser}
+        onContinue={handleContinue}
+      />
     </div>
   );
 };
