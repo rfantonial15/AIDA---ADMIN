@@ -20,7 +20,8 @@ const AlertModal = ({ show }) => {
           <img src={sentIcon} alt="Alert Sent" className="h-16 w-16 mx-auto" />
         </div>
         <h2 className="font-bold text-xl mb-4" style={{ color: '#007100' }}>ALERT SENT</h2>
-        <p className="text-gray-700 mb-6">Your message has been sent to the recipients. Thank you for making them alert.</p>
+        <p className="text-gray-700 mb-0">Your message has been sent to the recipients.</p>
+        <p className="text-gray-700 mb-6">Thank you for making them alert.</p>
         <button className="text-white py-2 px-4 rounded" style={{ backgroundColor: '#007100' }} onClick={handleContinue}>
           Continue
         </button>
