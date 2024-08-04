@@ -106,10 +106,10 @@ const Report = () => {
         <div className="flex justify-between items-center mb-8">
           <h1 className="font-bold text-3xl text-green-700">Incident: {selectedUser.incident}</h1>
           <div className="flex space-x-4">
-            <button className="bg-[#FF9B00] text-white py-2 px-8 rounded">
+            <button className="bg-[#FF9B00] text-white py-2 px-4 rounded">
               Print
             </button>
-            <button className="bg-[#007100] text-white py-2 px-8 rounded" onClick={handleBackToTable}>
+            <button className="bg-[#007100] text-white py-2 px-4 rounded" onClick={handleBackToTable}>
               Done
             </button>
           </div>
@@ -128,201 +128,225 @@ const Report = () => {
             ></iframe>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-2 gap-4 mb-4 bg-white p-4 rounded-lg shadow-lg">
           <div className="flex flex-col">
-            <label className="font-bold">Reporter's Name</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="reporterName"
-                value={formValues.reporterName || "JC Vanny Mill Saledaien"}
-                readOnly={editMode !== "reporterName"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "reporterName" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "reporterName" ? handleSaveClick() : handleEditClick("reporterName"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Reporter's Name</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="reporterName"
+                  value={formValues.reporterName || "JC Vanny Mill Saledaien"}
+                  readOnly={editMode !== "reporterName"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "reporterName" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "reporterName" ? handleSaveClick() : handleEditClick("reporterName"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Date</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="date"
-                value={formValues.date}
-                readOnly={editMode !== "date"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "date" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "date" ? handleSaveClick() : handleEditClick("date"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Date</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="date"
+                  value={formValues.date}
+                  readOnly={editMode !== "date"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "date" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "date" ? handleSaveClick() : handleEditClick("date"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Time</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="time"
-                value={formValues.time}
-                readOnly={editMode !== "time"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "time" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "time" ? handleSaveClick() : handleEditClick("time"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Time</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="time"
+                  value={formValues.time}
+                  readOnly={editMode !== "time"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "time" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "time" ? handleSaveClick() : handleEditClick("time"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Landmark</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="landmark"
-                value={formValues.landmark || "Zone - 2"}
-                readOnly={editMode !== "landmark"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "landmark" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "landmark" ? handleSaveClick() : handleEditClick("landmark"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Landmark</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="landmark"
+                  value={formValues.landmark || "Zone - 2"}
+                  readOnly={editMode !== "landmark"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "landmark" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "landmark" ? handleSaveClick() : handleEditClick("landmark"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Barangay</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="address"
-                value={formValues.address}
-                readOnly={editMode !== "address"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "address" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "address" ? handleSaveClick() : handleEditClick("address"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Barangay</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="address"
+                  value={formValues.address}
+                  readOnly={editMode !== "address"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "address" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "address" ? handleSaveClick() : handleEditClick("address"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Town/City</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="townCity"
-                value={formValues.townCity || "El Salvador City"}
-                readOnly={editMode !== "townCity"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "townCity" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "townCity" ? handleSaveClick() : handleEditClick("townCity"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Town/City</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="townCity"
+                  value={formValues.townCity || "El Salvador City"}
+                  readOnly={editMode !== "townCity"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "townCity" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "townCity" ? handleSaveClick() : handleEditClick("townCity"))}
+                />
+              </div>
             </div>
           </div>
           <div className="flex flex-col">
-            <label className="font-bold">Name of Victim</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="victimName"
-                value={formValues.victimName}
-                readOnly={editMode !== "victimName"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "victimName" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "victimName" ? handleSaveClick() : handleEditClick("victimName"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Name of Victim</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="victimName"
+                  value={formValues.victimName}
+                  readOnly={editMode !== "victimName"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "victimName" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "victimName" ? handleSaveClick() : handleEditClick("victimName"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Age</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="age"
-                value={formValues.age}
-                readOnly={editMode !== "age"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "age" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "age" ? handleSaveClick() : handleEditClick("age"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Age</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="age"
+                  value={formValues.age}
+                  readOnly={editMode !== "age"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "age" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "age" ? handleSaveClick() : handleEditClick("age"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Sex</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="sex"
-                value={formValues.sex}
-                readOnly={editMode !== "sex"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "sex" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "sex" ? handleSaveClick() : handleEditClick("sex"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Sex</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="sex"
+                  value={formValues.sex}
+                  readOnly={editMode !== "sex"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "sex" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "sex" ? handleSaveClick() : handleEditClick("sex"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Spot Report</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="spot"
-                value={formValues.spot}
-                readOnly={editMode !== "spot"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "spot" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "spot" ? handleSaveClick() : handleEditClick("spot"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Spot Report</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="spot"
+                  value={formValues.spot}
+                  readOnly={editMode !== "spot"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "spot" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "spot" ? handleSaveClick() : handleEditClick("spot"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Duty</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="duty"
-                value={formValues.duty}
-                readOnly={editMode !== "duty"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "duty" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "duty" ? handleSaveClick() : handleEditClick("duty"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Duty</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="duty"
+                  value={formValues.duty}
+                  readOnly={editMode !== "duty"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "duty" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "duty" ? handleSaveClick() : handleEditClick("duty"))}
+                />
+              </div>
             </div>
-            <label className="font-bold">Remarks</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                name="remarks"
-                value={formValues.remarks}
-                readOnly={editMode !== "remarks"}
-                onChange={handleInputChange}
-                className="border p-2 rounded mb-2 flex-1"
-              />
-              <FontAwesomeIcon
-                icon={editMode === "remarks" ? faCheck : faEdit}
-                className="ml-2 cursor-pointer"
-                onClick={() => (editMode === "remarks" ? handleSaveClick() : handleEditClick("remarks"))}
-              />
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-bold">Remarks</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="remarks"
+                  value={formValues.remarks}
+                  readOnly={editMode !== "remarks"}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded flex-1"
+                />
+                <FontAwesomeIcon
+                  icon={editMode === "remarks" ? faCheck : faEdit}
+                  className="ml-2 cursor-pointer"
+                  onClick={() => (editMode === "remarks" ? handleSaveClick() : handleEditClick("remarks"))}
+                />
+              </div>
             </div>
           </div>
         </div>
