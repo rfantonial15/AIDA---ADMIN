@@ -7,7 +7,11 @@ module.exports = {
     colors: {
       'lightgreen': '#B9D8B9',
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

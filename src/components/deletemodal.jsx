@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import deleteIcon from '../assets/navbar/delete.svg'; // Adjust the path as needed
 
 const DeleteModal = ({ show, user, onConfirmDelete, onCancel }) => {
@@ -21,13 +22,13 @@ const DeleteModal = ({ show, user, onConfirmDelete, onCancel }) => {
         )}
         <div className="flex justify-center space-x-4">
           <button
-            className="bg-red-500 text-white py-2 px-20 rounded"
+            className="bg-red-500 text-white py-2 px-10 rounded hover:bg-red-600"
             onClick={() => onConfirmDelete(user.id)}
           >
             Yes
           </button>
           <button
-            className="border border-red-500 text-red-500 py-2 px-20 rounded"
+            className="border border-red-500 text-red-500 py-2 px-10 rounded hover:bg-red-100"
             onClick={onCancel}
           >
             No
@@ -36,6 +37,18 @@ const DeleteModal = ({ show, user, onConfirmDelete, onCancel }) => {
       </div>
     </div>
   );
+};
+
+DeleteModal.propTypes = {
+  show: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    firstname: PropTypes.string,
+    lastname: PropTypes.string,
+    barangay: PropTypes.string,
+  }),
+  onConfirmDelete: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
 export default DeleteModal;

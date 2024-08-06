@@ -12,6 +12,7 @@ import AlertLogoGreen from '../assets/navbar/alert-line-green.png';
 import SettingLogo from '../assets/navbar/setting-line.png';
 import SettingLogoGreen from '../assets/navbar/setting-line-green.png';
 import LogoutLogo from '../assets/navbar/logout-line.png';
+import '@fontsource/inter'; // Import Inter font
 
 const Navbar = ({ children }) => {
   const [dateTime, setDateTime] = useState(new Date());
@@ -33,10 +34,6 @@ const Navbar = ({ children }) => {
     return `${dateStr} - ${timeStr}`;
   };
 
-  const isActive = (path) => {
-    return location.pathname === path;
-  };
-
   return (
     <div className="flex min-h-screen bg-gray-100">
       <aside className="w-80 flex bg-white flex-col">
@@ -45,61 +42,41 @@ const Navbar = ({ children }) => {
         </div>
         <nav className="flex-grow pt-10 px-8">
           <ul>
-            <li className="pt-2">
-              <NavLink
-                to="/dashboard"
-                className={({ isActive }) =>
-                  isActive ? "flex items-center rounded-lg p-4 bg-green-200 text-white" : "flex items-center p-4 rounded-lg bg-white hover:bg-green-200"
-                }
-              >
-                <img src={isActive('/dashboard') ? DashboardLogoGreen : DashboardLogo} alt="Dashboard Logo" className="mr-5" />
-                <span className={isActive('/dashboard') ? 'text-green-700' : 'text-gray-500'}>Dashboard</span>
-              </NavLink>
-            </li>
-            <li className="pt-2">
-              <NavLink
-                to="/reports"
-                className={({ isActive }) =>
-                  isActive ? "flex items-center rounded-lg p-4 bg-green-200 text-white" : "flex items-center p-4 rounded-lg bg-white hover:bg-green-200"
-                }
-              >
-                <img src={isActive('/reports') ? ReportLogoGreen : ReportLogo} alt="Reports Logo" className="mr-5" />
-                <span className={isActive('/reports') ? 'text-green-700' : 'text-gray-500'}>Reports</span>
-              </NavLink>
-            </li>
-            <li className="pt-2">
-              <NavLink
-                to="/usermanagement"
-                className={({ isActive }) =>
-                  isActive ? "flex items-center rounded-lg p-4 bg-green-200 text-white" : "flex items-center p-4 rounded-lg bg-white hover:bg-green-200"
-                }
-              >
-                <img src={isActive('/usermanagement') ? UserLogoGreen : UserLogo} alt="User Management Logo" className="mr-5" />
-                <span className={isActive('/usermanagement') ? 'text-green-700' : 'text-gray-500'}>User Management</span>
-              </NavLink>
-            </li>
-            <li className="pt-2">
-              <NavLink
-                to="/sendalert"
-                className={({ isActive }) =>
-                  isActive ? "flex items-center rounded-lg p-4 bg-green-200 text-white" : "flex items-center p-4 rounded-lg bg-white hover:bg-green-200"
-                }
-              >
-                <img src={isActive('/sendalert') ? AlertLogoGreen : AlertLogo} alt="Send Alert Logo" className="mr-5" />
-                <span className={isActive('/sendalert') ? 'text-green-700' : 'text-gray-500'}>Send Alert</span>
-              </NavLink>
-            </li>
-            <li className="pt-2">
-              <NavLink
-                to="/settings"
-                className={({ isActive }) =>
-                  isActive ? "flex items-center rounded-lg p-4 bg-green-200 text-white" : "flex items-center p-4 rounded-lg bg-white hover:bg-green-200"
-                }
-              >
-                <img src={isActive('/settings') ? SettingLogoGreen : SettingLogo} alt="Settings Logo" className="mr-5" />
-                <span className={isActive('/settings') ? 'text-green-700' : 'text-gray-500'}>Settings</span>
-              </NavLink>
-            </li>
+            <NavItem
+              to="/dashboard"
+              isActive={location.pathname === '/dashboard'}
+              icon={DashboardLogo}
+              activeIcon={DashboardLogoGreen}
+              label="Dashboard"
+            />
+            <NavItem
+              to="/reports"
+              isActive={location.pathname === '/reports'}
+              icon={ReportLogo}
+              activeIcon={ReportLogoGreen}
+              label="Reports"
+            />
+            <NavItem
+              to="/usermanagement"
+              isActive={location.pathname === '/usermanagement'}
+              icon={UserLogo}
+              activeIcon={UserLogoGreen}
+              label="User Management"
+            />
+            <NavItem
+              to="/sendalert"
+              isActive={location.pathname === '/sendalert'}
+              icon={AlertLogo}
+              activeIcon={AlertLogoGreen}
+              label="Send Alert"
+            />
+            <NavItem
+              to="/settings"
+              isActive={location.pathname === '/settings'}
+              icon={SettingLogo}
+              activeIcon={SettingLogoGreen}
+              label="Settings"
+            />
           </ul>
         </nav>
         <div className="p-4 px-8 pb-14">
@@ -126,5 +103,19 @@ const Navbar = ({ children }) => {
     </div>
   );
 };
+
+const NavItem = ({ to, isActive, icon, activeIcon, label }) => (
+  <li className="pt-2">
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        isActive ? "flex items-center rounded-lg p-4 bg-green-200 text-white" : "flex items-center p-4 rounded-lg bg-white hover:bg-green-200"
+      }
+    >
+      <img src={isActive ? activeIcon : icon} alt={`${label} Logo`} className="mr-5" />
+      <span className={isActive ? 'text-green-700' : 'text-gray-500'}>{label}</span>
+    </NavLink>
+  </li>
+);
 
 export default Navbar;

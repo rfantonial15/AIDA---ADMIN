@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
 import sampleImage from "../assets/Bg.png"; // Adjust the path as needed
+import '@fontsource/inter'; // Import Inter font
 
 const ReportDetails = () => {
   const { id } = useParams();
@@ -27,6 +28,9 @@ const ReportDetails = () => {
           spot: "Transport",
           duty: "Charlie",
           remarks: "OWWA",
+          reporterName: "JC Vanny Mill Saledaien",
+          landmark: "Zone - 2",
+          townCity: "El Salvador City",
         };
         setFormValues(mockUser);
       } catch (error) {
@@ -52,7 +56,7 @@ const ReportDetails = () => {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-8 font-inter">
       <div className="flex justify-between items-center mb-8">
         <h1 className="font-bold text-3xl text-green-700">Incident: {formValues.incident}</h1>
         <div className="flex space-x-4">
@@ -81,7 +85,7 @@ const ReportDetails = () => {
           <DetailField
             label="Reporter's Name"
             name="reporterName"
-            value={formValues.reporterName || "JC Vanny Mill Saledaien"}
+            value={formValues.reporterName}
             editMode={editMode}
             onEdit={handleEditClick}
             onSave={handleSaveClick}
@@ -108,7 +112,7 @@ const ReportDetails = () => {
           <DetailField
             label="Landmark"
             name="landmark"
-            value={formValues.landmark || "Zone - 2"}
+            value={formValues.landmark}
             editMode={editMode}
             onEdit={handleEditClick}
             onSave={handleSaveClick}
@@ -126,7 +130,7 @@ const ReportDetails = () => {
           <DetailField
             label="Town/City"
             name="townCity"
-            value={formValues.townCity || "El Salvador City"}
+            value={formValues.townCity}
             editMode={editMode}
             onEdit={handleEditClick}
             onSave={handleSaveClick}
@@ -205,7 +209,7 @@ const DetailField = ({ label, name, value, editMode, onEdit, onSave, onChange })
           value={value}
           readOnly={editMode !== name}
           onChange={onChange}
-          className="border p-2 rounded flex-1"
+          className={`border p-2 rounded flex-1 ${editMode !== name ? 'bg-gray-100' : ''}`}
         />
         <FontAwesomeIcon
           icon={editMode === name ? faCheck : faEdit}

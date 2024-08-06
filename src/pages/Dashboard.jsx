@@ -10,6 +10,7 @@ import TrendUp from '../assets/dashboard/trending-up.svg';
 import CarCrashIcon from '../assets/dashboard/Car.svg';
 import FireIcon from '../assets/dashboard/Fire.svg';
 import Image from '../assets/dashboard/accidentimage.png';
+import '@fontsource/inter'; // Import Inter font
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -58,7 +59,6 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    // Filter users based on selected filters
     const filteredData = users.filter(user =>
       user.incident.toLowerCase().includes(filter.toLowerCase()) &&
       (dateFilter === '' || user.date === dateFilter) &&
@@ -70,7 +70,6 @@ const Dashboard = () => {
   }, [filter, dateFilter, nameFilter, incidentFilter, monthFilter, users]);
 
   const resetFilters = () => {
-    // Reset all filters
     setFilter('');
     setDateFilter('');
     setNameFilter('');
@@ -104,66 +103,10 @@ const Dashboard = () => {
     <div className="p-8">
       <h1 className="font-bold text-3xl text-green-700 mb-8">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="p-4 rounded-lg bg-white flex flex-col relative">
-          <div className="flex justify-between items-start">
-            <h2 className="font-bold text-gray-500">Total Reports</h2>
-          </div>
-          <div className="absolute top-2 right-2 m-2">
-            <img src={TotalReports} alt="Total Reports Icon" className="w-16 h-16"/>
-          </div>
-          <div className="flex-grow flex items-center justify-start mt-4">
-            <p className="text-2xl font-bold">123</p>
-          </div>
-          <div className="flex items-center mt-4">
-            <img src={TrendUp} alt="Increase Icon" className="mr-2 w-6 h-6" />
-            <p className="text-gray-500">8.5% Up from yesterday</p>
-          </div>
-        </div>
-        <div className="p-4 rounded-lg bg-white flex flex-col relative">
-          <div className="flex justify-between items-start">
-            <h2 className="font-bold text-gray-500">Total Users</h2>
-          </div>
-          <div className="absolute top-2 right-2 m-2">
-            <img src={TotalUsers} alt="Total Users Icon" className="w-16 h-16"/>
-          </div>
-          <div className="flex-grow flex items-center justify-start mt-4">
-            <p className="text-2xl font-bold">456</p>
-          </div>
-          <div className="flex items-center mt-4">
-            <img src={TrendUp} alt="Increase Icon" className="mr-2 w-6 h-6" />
-            <p className="text-gray-500">1.3% Up from past week</p>
-          </div>
-        </div>
-        <div className="p-4 rounded-lg bg-white flex flex-col relative">
-          <div className="flex justify-between items-start">
-            <h2 className="font-bold text-gray-500">Total Alerts</h2>
-          </div>
-          <div className="absolute top-2 right-2 m-2">
-            <img src={TotalAlerts} alt="Total Alerts Icon" className="w-16 h-16"/>
-          </div>
-          <div className="flex-grow flex items-center justify-start mt-4">
-            <p className="text-2xl font-bold">789</p>
-          </div>
-          <div className="flex items-center mt-4">
-            <img src={TrendDown} alt="Increase Icon" className="mr-2 w-6 h-6" />
-            <p className="text-gray-500">4.3% Down from yesterday</p>
-          </div>
-        </div>
-        <div className="p-4 rounded-lg bg-white flex flex-col relative">
-          <div className="flex justify-between items-start">
-            <h2 className="font-bold text-gray-500">Pending Alerts</h2>
-          </div>
-          <div className="absolute top-2 right-2 m-2">
-            <img src={PendingAlerts} alt="Pending Alerts Icon" className="w-16 h-16"/>
-          </div>
-          <div className="flex-grow flex items-center justify-start mt-4">
-            <p className="text-2xl font-bold">101</p>
-          </div>
-          <div className="flex items-center mt-4">
-            <img src={TrendUp} alt="Increase Icon" className="mr-2 w-6 h-6" />
-            <p className="text-gray-500">1.8% Up from yesterday</p>
-          </div>
-        </div>
+        <DashboardCard title="Total Reports" count="123" trend="8.5% Up from yesterday" trendIcon={TrendUp} icon={TotalReports} />
+        <DashboardCard title="Total Users" count="456" trend="1.3% Up from past week" trendIcon={TrendUp} icon={TotalUsers} />
+        <DashboardCard title="Total Alerts" count="789" trend="4.3% Down from yesterday" trendIcon={TrendDown} icon={TotalAlerts} />
+        <DashboardCard title="Pending Alerts" count="101" trend="1.8% Up from yesterday" trendIcon={TrendUp} icon={PendingAlerts} />
       </div>
       <div className="p-6 rounded-lg bg-white">
         <div className="flex justify-between items-center mb-4">
@@ -250,5 +193,23 @@ const Dashboard = () => {
     </div>
   );
 };
+
+const DashboardCard = ({ title, count, trend, trendIcon, icon }) => (
+  <div className="p-4 rounded-lg bg-white flex flex-col relative">
+    <div className="flex justify-between items-start">
+      <h2 className="font-bold text-gray-500">{title}</h2>
+    </div>
+    <div className="absolute top-2 right-2 m-2">
+      <img src={icon} alt={`${title} Icon`} className="w-16 h-16"/>
+    </div>
+    <div className="flex-grow flex items-center justify-start mt-4">
+      <p className="text-2xl font-bold">{count}</p>
+    </div>
+    <div className="flex items-center mt-4">
+      <img src={trendIcon} alt="Trend Icon" className="mr-2 w-6 h-6" />
+      <p className="text-gray-500">{trend}</p>
+    </div>
+  </div>
+);
 
 export default Dashboard;

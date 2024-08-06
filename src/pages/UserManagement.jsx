@@ -4,6 +4,7 @@ import { faSearch, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import filterIcon from "../assets/Filter.svg";
 import DeleteModal from "../components/deletemodal"; // Adjust the path as needed
 import DoneDeleteModal from "../components/donedelete"; // Adjust the path as needed
+import '@fontsource/inter'; // Import Inter font
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -28,6 +29,7 @@ const UserManagement = () => {
             phone: 9058329729,
             barangay: "Poblacion",
             date: "06-18-24",
+            incident: "Theft",
             manage: "Delete",
           },
           {
@@ -38,6 +40,7 @@ const UserManagement = () => {
             phone: 9058329729,
             barangay: "Taytay",
             date: "06-19-24",
+            incident: "Robbery",
             manage: "Delete",
           },
         ];

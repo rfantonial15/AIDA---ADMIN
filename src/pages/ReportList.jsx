@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import filterIcon from "../assets/Filter.svg";
+import '@fontsource/inter'; // Import Inter font
 
 const ReportList = ({
   users,
@@ -16,10 +17,15 @@ const ReportList = ({
   onResetFilters,
   onRowClick,
 }) => {
+  // Get unique values for filters
+  const uniqueDates = [...new Set(users.map(user => user.date))];
+  const uniqueNames = [...new Set(users.map(user => user.victimName))];
+  const uniqueIncidents = [...new Set(users.map(user => user.incident))];
+
   return (
     <>
       <h1 className="font-bold text-3xl text-green-700 mb-8">Reports</h1>
-      <div className="">
+      <div>
         <div className="flex justify-between items-center mb-4 space-x-2">
           <div className="filter-card flex items-center border rounded-lg bg-white">
             <div className="flex items-center border-r p-2">
@@ -34,9 +40,9 @@ const ReportList = ({
               className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
             >
               <option value="">Date</option>
-              {users.map((user, index) => (
-                <option key={index} value={user.date}>
-                  {user.date}
+              {uniqueDates.map((date, index) => (
+                <option key={index} value={date}>
+                  {date}
                 </option>
               ))}
             </select>
@@ -45,10 +51,10 @@ const ReportList = ({
               onChange={onNameFilterChange}
               className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
             >
-              <option value="name">Name</option>
-              {users.map((user, index) => (
-                <option key={index} value={user.victimName}>
-                  {user.victimName}
+              <option value="">Name</option>
+              {uniqueNames.map((name, index) => (
+                <option key={index} value={name}>
+                  {name}
                 </option>
               ))}
             </select>
@@ -58,9 +64,9 @@ const ReportList = ({
               className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
             >
               <option value="">Incident</option>
-              {users.map((user, index) => (
-                <option key={index} value={user.incident}>
-                  {user.incident}
+              {uniqueIncidents.map((incident, index) => (
+                <option key={index} value={incident}>
+                  {incident}
                 </option>
               ))}
             </select>

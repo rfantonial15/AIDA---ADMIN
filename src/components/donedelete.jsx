@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import deleteIcon from '../assets/navbar/deleted.svg'; // Adjust the path as needed
 
 const DoneDeleteModal = ({ show, user, onContinue }) => {
@@ -20,8 +21,7 @@ const DoneDeleteModal = ({ show, user, onContinue }) => {
           </>
         )}
         <button
-          className="bg-green-500 text-white py-2 px-20 rounded"
-          style={{ backgroundColor: '#007100' }}
+          className="bg-green-700 text-white py-2 px-20 rounded hover:bg-green-600"
           onClick={onContinue}
         >
           Continue
@@ -29,6 +29,16 @@ const DoneDeleteModal = ({ show, user, onContinue }) => {
       </div>
     </div>
   );
+};
+
+DoneDeleteModal.propTypes = {
+  show: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    firstname: PropTypes.string,
+    lastname: PropTypes.string,
+    barangay: PropTypes.string,
+  }),
+  onContinue: PropTypes.func.isRequired,
 };
 
 export default DoneDeleteModal;
