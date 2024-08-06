@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Report from "./pages/Report";
+import ReportDetails from "./pages/ReportDetails";
 import UserManagement from "./pages/UserManagement";
 import SendAlert from "./pages/SendAlert";
 import AlertMessage from "./pages/AlertMessage";
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Navbar><Dashboard /></Navbar>} />
           <Route path="/reports" element={<Navbar><Report /></Navbar>} />
+          <Route path="/reports/:id" element={<Navbar><ReportDetails /></Navbar>} />
           <Route path="/usermanagement" element={<Navbar><UserManagement /></Navbar>} />
           <Route path="/sendalert" element={<Navbar><SendAlert /></Navbar>} />
           <Route path="/alert-message" element={<Navbar><AlertMessage /></Navbar>} />
