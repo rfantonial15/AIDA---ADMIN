@@ -102,93 +102,39 @@ const Dashboard = () => {
     <div className="p-8">
       <h1 className="font-bold text-3xl text-green mb-8">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="p-4 rounded-lg bg-white flex flex-col relative">
-          <div className="flex justify-between items-start">
-            <h2 className="font-bold text-gray-500">Total Reports</h2>
-          </div>
-          <div className="absolute top-2 right-2 m-2">
-            <img src={TotalReports} alt="Total Reports Icon" className="w-16 h-16"/>
-          </div>
-          <div className="flex-grow flex items-center justify-start mt-4">
-            <p className="text-2xl font-bold">123</p>
-          </div>
-          <div className="flex items-center mt-4">
-            <img src={TrendUp} alt="Increase Icon" className="mr-2 w-6 h-6" />
-            <p className="text-gray-500">8.5% Up from yesterday</p>
-          </div>
-        </div>
-        <div className="p-4 rounded-lg bg-white flex flex-col relative">
-          <div className="flex justify-between items-start">
-            <h2 className="font-bold text-gray-500">Total Users</h2>
-          </div>
-          <div className="absolute top-2 right-2 m-2">
-            <img src={TotalUsers} alt="Total Users Icon" className="w-16 h-16"/>
-          </div>
-          <div className="flex-grow flex items-center justify-start mt-4">
-            <p className="text-2xl font-bold">456</p>
-          </div>
-          <div className="flex items-center mt-4">
-            <img src={TrendUp} alt="Increase Icon" className="mr-2 w-6 h-6" />
-            <p className="text-gray-500">1.3% Up from past week</p>
-          </div>
-        </div>
-        <div className="p-4 rounded-lg bg-white flex flex-col relative">
-          <div className="flex justify-between items-start">
-            <h2 className="font-bold text-gray-500">Total Alerts</h2>
-          </div>
-          <div className="absolute top-2 right-2 m-2">
-            <img src={TotalAlerts} alt="Total Alerts Icon" className="w-16 h-16"/>
-          </div>
-          <div className="flex-grow flex items-center justify-start mt-4">
-            <p className="text-2xl font-bold">789</p>
-          </div>
-          <div className="flex items-center mt-4">
-            <img src={TrendDown} alt="Increase Icon" className="mr-2 w-6 h-6" />
-            <p className="text-gray-500">4.3% Down from yesterday</p>
-          </div>
-        </div>
-        <div className="p-4 rounded-lg bg-white flex flex-col relative">
-          <div className="flex justify-between items-start">
-            <h2 className="font-bold text-gray-500">Pending Alerts</h2>
-          </div>
-          <div className="absolute top-2 right-2 m-2">
-            <img src={PendingAlerts} alt="Pending Alerts Icon" className="w-16 h-16"/>
-          </div>
-          <div className="flex-grow flex items-center justify-start mt-4">
-            <p className="text-2xl font-bold">101</p>
-          </div>
-          <div className="flex items-center mt-4">
-            <img src={TrendUp} alt="Increase Icon" className="mr-2 w-6 h-6" />
-            <p className="text-gray-500">1.8% Up from yesterday</p>
-          </div>
-        </div>
+        <DashboardCard title="Total Reports" count="521" trend="8.5% Up from yesterday" trendIcon={TrendUp} icon={TotalReports} />
+        <DashboardCard title="Total Users" count="456" trend="1.3% Up from past week" trendIcon={TrendUp} icon={TotalUsers} />
+        <DashboardCard title="Total Alerts" count="102" trend="4.3% Down from yesterday" trendIcon={TrendDown} icon={TotalAlerts} />
+        <DashboardCard title="Pending Alerts" count="52" trend="1.8% Up from yesterday" trendIcon={TrendUp} icon={PendingAlerts} />
       </div>
       <div className="p-6 rounded-lg bg-white">
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-bold text-2xl text-green-700">Report Details</h2>
-          <select
-            className="p-1 border border-gray-300 rounded focus:outline-none bg-gray-100 text-gray-500 text-sm font-medium"
-            value={monthFilter}
-            onChange={(e) => setMonthFilter(e.target.value)}
-          >
-            <option value="">Select Month</option>
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
-          </select>
+          <div className="relative">
+            <select
+              className="p-1 border border-gray-300 rounded focus:outline-none bg-hoverlightgray text-gray-500 text-sm font-medium h-10 overflow-auto"
+              value={monthFilter}
+              onChange={(e) => setMonthFilter(e.target.value)}
+            >
+              <option value="" className="text-gray-500 text-sm font-medium p-4">Select Month</option>
+              <option value="01" className="text-gray-500 text-sm font-medium p-4">January</option>
+              <option value="02" className="text-gray-500 text-sm font-medium p-4">February</option>
+              <option value="03" className="text-gray-500 text-sm font-medium p-4">March</option>
+              <option value="04" className="text-gray-500 text-sm font-medium p-4">April</option>
+              <option value="05" className="text-gray-500 text-sm font-medium p-4">May</option>
+              <option value="06" className="text-gray-500 text-sm font-medium p-4">June</option>
+              <option value="07" className="text-gray-500 text-sm font-medium p-4">July</option>
+              <option value="08" className="text-gray-500 text-sm font-medium p-4">August</option>
+              <option value="09" className="text-gray-500 text-sm font-medium p-4">September</option>
+              <option value="10" className="text-gray-500 text-sm font-medium p-4">October</option>
+              <option value="11" className="text-gray-500 text-sm font-medium p-4">November</option>
+              <option value="12" className="text-gray-500 text-sm font-medium p-4">December</option>
+            </select>
+          </div>
         </div>
         <div className="overflow-x-auto pt-4">
           <table className="min-w-full bg-white shadow-md">
-            <thead className="bg-gray-100">
+            <thead className="bg-lightgray">
               <tr>
                 <th className="py-2 px-4 text-left rounded-l-lg">Incident Report</th>
                 <th className="py-2 px-4 text-left">Location</th>
@@ -205,7 +151,7 @@ const Dashboard = () => {
                     {user.incident}
                   </td>
                   <td className="px-4 py-2 text-left" onClick={() => openModal(user)}>{user.location}</td>
-                  <td className="px-4 py-2 text-left" onClick={() => openModal(user)}>{`${user.date} - ${user.time}`}</td>
+                  <td className="text-left" onClick={() => openModal(user)}>{`${user.date} - ${user.time}`}</td>
                   <td className="px-4 py-2 text-left" onClick={() => openModal(user)}>{user.reporter}</td>
                   <td className="px-4 py-2 text-center relative">
                     <button 
@@ -213,7 +159,7 @@ const Dashboard = () => {
                         e.stopPropagation();
                         toggleStatus(index);
                       }}
-                      className={`px-2 py-1 rounded ${user.status === 'Done' ? 'bg-green-500' : 'bg-yellow-500'} text-white`}
+                      className={`w-24 px-2 py-2 rounded ${user.status === 'Done' ? 'bg-green text-white' : 'bg-lightyellow text-black'}`}
                     >
                       {user.status}
                     </button>
@@ -238,13 +184,41 @@ const Dashboard = () => {
               <h2 className="pt-3 text-xl font-bold">{selectedUser.incident.toUpperCase()} ACCIDENT</h2>
               <p className="text-sm font-semibold mt-2">{selectedUser.location}</p>
               <p className="text-xs font-thin">Reporter: {selectedUser.reporter}</p>
-              <button onClick={viewDetails} className="mt-4 px-36 py-2 bg-white text-red-600 rounded-md font-semibold">
+              <button onClick={viewDetails} className="mt-4 px-32 py-2 bg-white text-red rounded-md font-inter-bold">
                 View Details
               </button>
             </div>
           </div>
         </Modal>
       )}
+    </div>
+  );
+};
+
+const DashboardCard = ({ title, count, trend, trendIcon, icon }) => {
+  const isTrendUp = trend.includes('Up');
+  const trendColor = isTrendUp ? 'text-mintgreen' : 'text-red-500';
+
+  const [percentage, ...textArray] = trend.split(' ');
+  const text = textArray.join(' ');
+
+  return (
+    <div className="p-4 rounded-lg bg-white flex flex-col relative">
+      <div className="flex justify-between items-start">
+        <h2 className="font-bold text-gray-500">{title}</h2>
+      </div>
+      <div className="absolute top-2 right-2 m-2">
+        <img src={icon} alt={`${title} Icon`} className="w-16 h-16"/>
+      </div>
+      <div className="flex-grow flex items-center justify-start mt-4">
+        <p className="text-2xl font-bold">{count}</p>
+      </div>
+      <div className="flex items-center mt-6">
+        <img src={trendIcon} alt="Trend Icon" className="mr-2 w-6 h-6" />
+        <p className="text-gray-500">
+          <span className={trendColor}>{percentage}</span> {text}
+        </p>
+      </div>
     </div>
   );
 };

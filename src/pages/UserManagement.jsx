@@ -28,6 +28,7 @@ const UserManagement = () => {
             phone: 9058329729,
             barangay: "Poblacion",
             date: "06-18-24",
+            incident: "Theft",
             manage: "Delete",
           },
           {
@@ -38,6 +39,7 @@ const UserManagement = () => {
             phone: 9058329729,
             barangay: "Taytay",
             date: "06-19-24",
+            incident: "Robbery",
             manage: "Delete",
           },
         ];
@@ -149,7 +151,7 @@ const UserManagement = () => {
           </div>
           <div className="pb-6">
             <div className="flex items-center border border-gray-300 rounded-md px-4 py-2 bg-white">
-              <FontAwesomeIcon icon={faSearch} className="text-gray-400 w-6 h-6" />
+              <FontAwesomeIcon icon={faSearch} className="text-gray-400 w-4 h-4 mr-2" />
               <input
                 type="text"
                 className="ml-2 outline-none w-full pr-52"
@@ -162,7 +164,7 @@ const UserManagement = () => {
         </div>
         <div className="overflow-x-auto border rounded-lg">
           <table className="min-w-full shadow-md">
-            <thead className="bg-gray-100">
+            <thead className="bg-lightgray">
               <tr className="border-b">
                 <th className="py-2 px-4 rounded-tr-lg">ID</th>
                 <th className="py-2 px-4 text-left">First Name</th>
@@ -184,7 +186,7 @@ const UserManagement = () => {
                   <td className="px-4 py-2 text-left">{user.barangay}</td>
                   <td className="px-4 py-2 text-center">
                     <button
-                      className="px-3 py-1 bg-red-500 text-white rounded"
+                      className="px-4 py-1 bg-red text-white rounded"
                       onClick={() => handleShowDeleteModal(user)}
                     >
                       Delete

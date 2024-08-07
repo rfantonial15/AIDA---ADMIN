@@ -29,7 +29,6 @@ const AlertMessage = () => {
     };
     document.body.appendChild(script);
 
-    // Event listener to handle clicks outside the dropdown
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
@@ -134,7 +133,7 @@ const AlertMessage = () => {
   const handleFileAttach = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setAttachedFiles([...attachedFiles, file]);
+      setAttachedFiles([...attachedFiles, { name: file.name, url: URL.createObjectURL(file) }]);
     }
   };
 
@@ -146,7 +145,6 @@ const AlertMessage = () => {
   };
 
   const handleSendAlert = () => {
-    // Add logic to send the alert
     console.log(`Alert sent to ${selectedRecipients.join(', ')}: ${alertMessage}`);
     setAlertMessage('');
     setUploadedImage(null);
@@ -157,22 +155,20 @@ const AlertMessage = () => {
   };
 
   const handleClose = () => {
-    navigate('/send-alert');
+    navigate('/sendalert');
   };
 
   const handleMinimize = () => {
-    // Implement minimize functionality
     console.log("Minimize clicked");
   };
 
   const handleExpand = () => {
-    // Implement expand functionality
     console.log("Expand clicked");
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    navigate('/send-alert'); // navigate back to SendAlert page
+    navigate('/sendalert'); 
   };
 
   return (
@@ -189,56 +185,18 @@ const AlertMessage = () => {
         </div>
         <div className="p-6">
           <div className="flex items-center mb-4">
-            <div className="relative inline-block text-left" ref={dropdownRef}>
-              <button 
-                className="flex justify-start items-center w-full h-9 px-6 bg-green-200 text-gray-700 rounded" 
-                onClick={toggleDropdown}
-                style={{
-                  width: '248px',
-                  height: '37px',
-                  padding: '9px 23px',
-                  borderRadius: '5px',
-                  background: '#D9EAD9'
-                }}
-              >
-                {selectedRecipients.length > 0 ? 'Selected Recipients' : 'Recipients'}
-              </button>
-              {dropdownOpen && (
-                <div 
-                  className="absolute mt-2 w-62 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10 overflow-y-auto"
-                  style={{
-                    width: '248px',
-                    height: '200px',
-                    borderRadius: '5px',
-                    background: '#F3F7FF',
-                  }}
-                >
-                  <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                    {recipients.map((recipient) => (
-                      <a
-                        key={recipient}
-                        href="#"
-                        onClick={() => handleRecipientSelect(recipient)}
-                        className={`block px-4 py-2 text-gray-700 hover:bg-gray-100 ${selectedRecipients.includes(recipient) ? 'bg-gray-200' : ''}`}
-                        role="menuitem"
-                      >
-                        {recipient}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            <Dropdown
+              dropdownOpen={dropdownOpen}
+              toggleDropdown={toggleDropdown}
+              dropdownRef={dropdownRef}
+              recipients={recipients}
+              selectedRecipients={selectedRecipients}
+              handleRecipientSelect={handleRecipientSelect}
+            />
             {selectedRecipients.length > 0 && (
               <div className="ml-4 flex flex-wrap">
                 {selectedRecipients.map((recipient) => (
-                  <div 
-                    key={recipient} 
-                    className="px-4 py-2 m-1 bg-gray-200 text-gray-700 rounded cursor-pointer" 
-                    onClick={() => handleRemoveRecipient(recipient)}
-                  >
-                    {recipient}
-                  </div>
+                  <RecipientBadge key={recipient} recipient={recipient} handleRemoveRecipient={handleRemoveRecipient} />
                 ))}
               </div>
             )}
@@ -254,26 +212,8 @@ const AlertMessage = () => {
                 onChange={handleAlertMessageChange}
                 placeholder="Enter your alert message here..."
               />
-              {attachedFiles.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="font-bold text-gray-700 mb-2">Attached Files:</h4>
-                  <ul className="list-disc list-inside">
-                    {attachedFiles.map((file, index) => (
-                      <li key={index} className="text-gray-700"><a href={file.url} target="_blank" rel="noopener noreferrer">{file.name}</a></li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {attachedLinks.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="font-bold text-gray-700 mb-2">Attached Links:</h4>
-                  <ul className="list-disc list-inside">
-                    {attachedLinks.map((link, index) => (
-                      <li key={index} className="text-gray-700"><a href={link} target="_blank" rel="noopener noreferrer">{link}</a></li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <FileList title="Attached Files" files={attachedFiles} />
+              <FileList title="Attached Links" files={attachedLinks} />
               {showWarning && (
                 <div className="mb-4">
                   <h4 className="font-bold text-red-600">Warning!</h4>
@@ -295,20 +235,14 @@ const AlertMessage = () => {
               Send
             </button>
             <div className="flex items-center space-x-4">
-              <button className="border p-2 rounded" onClick={() => document.getElementById('fileInput').click()}>
-                <FontAwesomeIcon icon={faPaperclip} />
-                <input type="file" id="fileInput" className="hidden" onChange={handleFileAttach} />
-              </button>
+              <FileInput handleChange={handleFileAttach} icon={faPaperclip} />
               <button className="border p-2 rounded" onClick={handleLinkAttach}>
                 <FontAwesomeIcon icon={faLink} />
               </button>
               <button className="border p-2 rounded" onClick={createPicker}>
                 <FontAwesomeIcon icon={faCloudUploadAlt} />
               </button>
-              <button className="border p-2 rounded" onClick={() => document.getElementById('imageInput').click()}>
-                <FontAwesomeIcon icon={faImage} />
-                <input type="file" id="imageInput" className="hidden" onChange={handleImageUpload} />
-              </button>
+              <FileInput handleChange={handleImageUpload} icon={faImage} />
               <button className="border p-2 rounded" onClick={() => {
                 setAlertMessage('');
                 setUploadedImage(null);
@@ -327,5 +261,80 @@ const AlertMessage = () => {
     </div>
   );
 };
+
+const Dropdown = ({ dropdownOpen, toggleDropdown, dropdownRef, recipients, selectedRecipients, handleRecipientSelect }) => (
+  <div className="relative inline-block text-left" ref={dropdownRef}>
+    <button 
+      className="flex justify-start items-center w-full h-9 px-6 bg-green-200 text-gray-700 rounded" 
+      onClick={toggleDropdown}
+      style={{
+        width: '248px',
+        height: '37px',
+        padding: '9px 23px',
+        borderRadius: '5px',
+        background: '#D9EAD9'
+      }}
+    >
+      {selectedRecipients.length > 0 ? 'Selected Recipients' : 'Recipients'}
+    </button>
+    {dropdownOpen && (
+      <div 
+        className="absolute mt-2 w-62 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10 overflow-y-auto"
+        style={{
+          width: '248px',
+          height: '200px',
+          borderRadius: '5px',
+          background: '#F3F7FF',
+        }}
+      >
+        <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+          {recipients.map((recipient) => (
+            <a
+              key={recipient}
+              href="#"
+              onClick={() => handleRecipientSelect(recipient)}
+              className={`block px-4 py-2 text-gray-700 hover:bg-gray-100 ${selectedRecipients.includes(recipient) ? 'bg-gray-200' : ''}`}
+              role="menuitem"
+            >
+              {recipient}
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+);
+
+const RecipientBadge = ({ recipient, handleRemoveRecipient }) => (
+  <div 
+    key={recipient} 
+    className="px-4 py-2 m-1 bg-gray-200 text-gray-700 rounded cursor-pointer" 
+    onClick={() => handleRemoveRecipient(recipient)}
+  >
+    {recipient}
+  </div>
+);
+
+const FileList = ({ title, files }) => (
+  files.length > 0 && (
+    <div className="mb-4">
+      <h4 className="font-bold text-gray-700 mb-2">{title}:</h4>
+      <ul className="list-disc list-inside">
+        {files.map((file, index) => (
+          <li key={index} className="text-gray-700">
+            <a href={file.url} target="_blank" rel="noopener noreferrer">{file.name || file}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+);
+
+const FileInput = ({ handleChange, icon }) => (
+  <button className="border p-2 rounded" onClick={() => document.getElementById('fileInput').click()}>
+    <FontAwesomeIcon icon={icon} />
+    <input type="file" id="fileInput" className="hidden" onChange={handleChange} />
+  </button>
+);
 
 export default AlertMessage;

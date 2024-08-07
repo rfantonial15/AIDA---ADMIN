@@ -9,6 +9,11 @@
   --bs-gray: #67696D;
   --bs-mintgreen: #00B69B;
   --bs-lightyellow: #FAFFCF;
+  --bs-hoverlightgray: #FCFDFD;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
 }
 
 .text-green {
@@ -43,6 +48,10 @@
   background-color: var(--bs-lightgray);
 }
 
+.bg-hoverlightgray {
+  background-color: var(--bs-hoverlightgray);
+}
+
 .bg-bglightgray {
   background-color: var(--bs-bglightgray);
 }
@@ -69,6 +78,50 @@
 
 .bg-lightyellow {
   background-color: var(--bs-lightyellow);
+}
+
+.font-inter-thin {
+  font-weight: 100;
+}
+
+.font-inter-extralight {
+  font-weight: 200;
+}
+
+.font-inter-light {
+  font-weight: 300;
+}
+
+.font-inter-normal {
+  font-weight: 400;
+}
+
+.font-inter-medium {
+  font-weight: 500;
+}
+
+.font-inter-bold {
+  font-weight: 700;
+}
+
+.font-size-xs {
+  font-size: 12px;
+}
+
+.font-size-sm {
+  font-size: 14px;
+}
+
+.font-size-md {
+  font-size: 16px;
+}
+
+.font-size-lg {
+  font-size: 18px;
+}
+
+.font-size-xl {
+  font-size: 24px;
 }
 
 .filter-card {
