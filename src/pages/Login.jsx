@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import logo from '../assets/AIDA-Logo.png';
-import background from '../assets/Landing-Image.png';
+import logo from '../assets/aida-logo.png';
+import background from '../assets/landing-image.png';
 
 const API_LOGIN_ENDPOINT = 'http://127.0.0.1:8000/api/login/';
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
-import filterIcon from "../assets/Filter.svg";
-import DeleteModal from "../components/deletemodal"; // Adjust the path as needed
-import DoneDeleteModal from "../components/donedelete"; // Adjust the path as needed
+import filterIcon from "../assets/usermanagement/filter.svg";
+import DeleteModal from "../components/DeleteModal";
+import DoneDeleteModal from "../components/DoneDelete";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);

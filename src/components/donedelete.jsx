@@ -1,5 +1,5 @@
 import React from 'react';
-import deleteIcon from '../assets/navbar/deleted.svg'; // Adjust the path as needed
+import deleteIcon from '../assets/modals/deleted.svg';
 
 const DoneDeleteModal = ({ show, user, onContinue }) => {
   if (!show) {

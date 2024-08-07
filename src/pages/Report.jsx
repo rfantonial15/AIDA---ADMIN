@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faSyncAlt, faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
-import reloadIcon from "../assets/reset.png"; // Adjust the path as needed
-import filterIcon from "../assets/Filter.svg";
-import sampleImage from "../assets/Bg.png"; // Adjust the path as needed
+import filterIcon from "../assets/reports/filter.svg";
+import sampleImage from "../assets/reports/accident.png";
 
 const Report = () => {
   const [users, setUsers] = useState([]);

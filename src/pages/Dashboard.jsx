@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
-import PendingAlerts from '../assets/dashboard/Pending Alerts Icon.svg';
-import TotalAlerts from '../assets/dashboard/Total Alerts Icon.svg';
-import TotalReports from '../assets/dashboard/Total Report Icon.svg';
-import TotalUsers from '../assets/dashboard/Total User Icon.svg';
+import PendingAlerts from '../assets/dashboard/pending-alerts-icon.svg';
+import TotalAlerts from '../assets/dashboard/total-alerts-icon.svg';
+import TotalReports from '../assets/dashboard/total-report-icon.svg';
+import TotalUsers from '../assets/dashboard/total-user-icon.svg';
 import TrendDown from '../assets/dashboard/trending-down.svg';
 import TrendUp from '../assets/dashboard/trending-up.svg';
-import CarCrashIcon from '../assets/dashboard/Car.svg';
-import FireIcon from '../assets/dashboard/Fire.svg';
+import CarCrashIcon from '../assets/dashboard/car.svg';
+import FireIcon from '../assets/dashboard/fire.svg';
 import Image from '../assets/dashboard/accidentimage.png';
 
 const Dashboard = () => {
@@ -58,7 +58,6 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    // Filter users based on selected filters
     const filteredData = users.filter(user =>
       user.incident.toLowerCase().includes(filter.toLowerCase()) &&
       (dateFilter === '' || user.date === dateFilter) &&
@@ -70,7 +69,6 @@ const Dashboard = () => {
   }, [filter, dateFilter, nameFilter, incidentFilter, monthFilter, users]);
 
   const resetFilters = () => {
-    // Reset all filters
     setFilter('');
     setDateFilter('');
     setNameFilter('');
@@ -102,7 +100,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-8">
-      <h1 className="font-bold text-3xl text-green-700 mb-8">Dashboard</h1>
+      <h1 className="font-bold text-3xl text-green mb-8">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <div className="p-4 rounded-lg bg-white flex flex-col relative">
           <div className="flex justify-between items-start">

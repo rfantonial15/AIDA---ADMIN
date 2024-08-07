@@ -1,25 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import starIcon from '../assets/Star.svg'; // Adjust the path as needed
-import starIconChecked from '../assets/Star-checked.svg'; // Adjust the path as needed
-import checkIcon from '../assets/check.svg'; // Adjust the path as needed
-import uncheckIcon from '../assets/uncheck.svg'; // Adjust the path as needed
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import starIcon from "../assets/alerts/star.svg";
+import starIconChecked from "../assets/alerts/star-checked.svg"
+import checkIcon from "../assets/alerts/check.svg";
+import uncheckIcon from "../assets/alerts/uncheck.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 
 const SendAlert = () => {
+  const [filter, setFilter] = useState("");
+
+  const resetFilters = () => {
+    setFilter("");
+  };
+
   const [alerts, setAlerts] = useState([
     {
       id: 1,
-      subject: 'All',
-      message: 'PAHIBALO: Tanan lumulupyo sa siyudad, adunay umaabot nga...',
-      time: '8:38 AM',
+      subject: "All",
+      message: "PAHIBALO: Tanan lumulupyo sa siyudad, adunay umaabot nga...",
+      time: "8:38 AM",
     },
     {
       id: 2,
-      subject: 'Barangay Pedro sa Baculio',
-      message: 'PAHIBALO: Gihikayt ang tanan nga mu-bakwit na sa evacuation...',
-      time: '8:38 AM',
+      subject: "Barangay Pedro sa Baculio",
+      message: "PAHIBALO: Gihikayt ang tanan nga mu-bakwit na sa evacuation...",
+      time: "8:38 AM",
     },
   ]);
   const [selectedAlert, setSelectedAlert] = useState(null);
@@ -39,90 +45,94 @@ const SendAlert = () => {
   };
 
   const navigateToAlertMessage = () => {
-    navigate('/alert-message');
+    navigate("/alert-message");
   };
 
   return (
     <div className="p-8">
       <h1 className="font-bold text-3xl text-green-700 mb-8">Send Alerts</h1>
       <div className="flex justify-between items-center mb-8">
-      <div>
+        <div>
+        <div>
             <div className="flex items-center border border-gray-300 rounded-md px-4 py-2 bg-white">
-              <svg
-                className="w-6 h-6 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-4.35-4.35M16 10a6 6 0 11-12 0 6 6 0 0112 0z"
-                />
-              </svg>
+              <FontAwesomeIcon icon={faSearch} className="text-gray-400 w-6 h-6" />
               <input
                 type="text"
                 className="ml-2 outline-none w-full pr-52"
                 placeholder="Search"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
               />
             </div>
           </div>
-        <button onClick={navigateToAlertMessage} className="bg-green-700 text-white py-2 px-4 rounded">
+        </div>
+        <button
+          onClick={navigateToAlertMessage}
+          className="bg-green-700 text-white py-2 px-4 rounded"
+        >
           + Send Alert
         </button>
       </div>
       <div className="overflow-x-auto border rounded-lg">
-      <table className="min-w-full shadow-md">
-        <thead className="bg-gray-100">
-          <tr className="border-b">
-            <th className="p-2 rounded-tr-lg">Subject</th>
-            <th className="p-2 text-left">Message</th>
-            <th className="p-2 text-center rounded-tr-lg">Time</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white">
-          {alerts.map((alert) => (
-            <tr
-              key={alert.id}
-              className={`cursor-pointer ${selectedAlert === alert.id ? 'bg-gray-100' : ''}` }
-              onClick={() => handleSelectAlert(alert.id)}
-              style={
-                selectedAlert === alert.id
-                  ? { borderRadius: '14px', border: '0.3px solid #B9B9B9', background: '#FFF' }
-                  : {}
-              }
-            >
-              <td className="pl-4 p-4 w-1/3">
-                <div className="flex items-center space-x-2">
-                  <img
-                    src={selectedAlert === alert.id ? checkIcon : uncheckIcon}
-                    alt={selectedAlert === alert.id ? 'Checked' : 'Unchecked'}
-                    className="h-6 w-6 cursor-pointer mr-4 ml-2"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectAlert(alert.id);
-                    }}
-                  />
-                  <img
-                    src={starredAlerts.includes(alert.id) ? starIconChecked : starIcon}
-                    alt="Star"
-                    className="w-6 h-6 cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleToggleStar(alert.id);
-                    }}
-                  />
-                  <span className="text-right">{alert.subject}</span>
-                </div>
-              </td>
-              <td className="p-2 text-left">{alert.message}</td>
-              <td className="p-2 text-center">{alert.time}</td>
+        <table className="min-w-full shadow-md">
+          <thead className="bg-gray-100">
+            <tr className="border-b">
+              <th className="p-2 rounded-tr-lg">Subject</th>
+              <th className="p-2 text-left">Message</th>
+              <th className="p-2 text-center rounded-tr-lg">Time</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white">
+            {alerts.map((alert) => (
+              <tr
+                key={alert.id}
+                className={`cursor-pointer ${
+                  selectedAlert === alert.id ? "bg-gray-100" : ""
+                }`}
+                onClick={() => handleSelectAlert(alert.id)}
+                style={
+                  selectedAlert === alert.id
+                    ? {
+                        borderRadius: "14px",
+                        border: "0.3px solid #B9B9B9",
+                        background: "#FFF",
+                      }
+                    : {}
+                }
+              >
+                <td className="pl-4 p-4 w-1/3">
+                  <div className="flex items-center space-x-2">
+                    <img
+                      src={selectedAlert === alert.id ? checkIcon : uncheckIcon}
+                      alt={selectedAlert === alert.id ? "Checked" : "Unchecked"}
+                      className="h-6 w-6 cursor-pointer mr-4 ml-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectAlert(alert.id);
+                      }}
+                    />
+                    <img
+                      src={
+                        starredAlerts.includes(alert.id)
+                          ? starIconChecked
+                          : starIcon
+                      }
+                      alt="Star"
+                      className="w-6 h-6 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleToggleStar(alert.id);
+                      }}
+                    />
+                    <span className="text-right">{alert.subject}</span>
+                  </div>
+                </td>
+                <td className="p-2 text-left">{alert.message}</td>
+                <td className="p-2 text-center">{alert.time}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div className="flex justify-between items-center mt-4">
         <div>Showing 1-2 of 2</div>

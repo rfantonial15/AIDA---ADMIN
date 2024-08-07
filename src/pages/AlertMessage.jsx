@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faExpandArrowsAlt, faTimes, faPaperclip, faLink, faImage, faTrashAlt, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import AlertModal from '../components/alertmodal'; // Adjust the path as needed
+import AlertModal from '../components/AlertModal';
 
 const CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
 const API_KEY = 'YOUR_API_KEY';
