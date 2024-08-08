@@ -1,17 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
 import sampleImage from "../assets/reports/accident.png";
 
-const ReportDetails = ({ selectedUser, handleBackToTable }) => {
+const ReportDetails = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(null);
-  const [formValues, setFormValues] = useState(selectedUser);
+  const [formValues, setFormValues] = useState({});
 
   useEffect(() => {
-    setFormValues(selectedUser);
-  }, [selectedUser]);
+    const fetchData = async () => {
+      try {
+        const mockUser = {
+          id,
+          date: "04-23-34",
+          time: "10:00 AM",
+          incident: "Fire",
+          victimName: "John Doe",
+          age: 34,
+          sex: "Male",
+          address: "123 Main St",
+          spot: "Transport",
+          duty: "Charlie",
+          remarks: "OWWA",
+          reporterName: "JC Vanny Mill Saledaien",
+          landmark: "Zone - 2",
+          townCity: "El Salvador City",
+        };
+        setFormValues(mockUser);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,8 +57,8 @@ const ReportDetails = ({ selectedUser, handleBackToTable }) => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="font-bold text-3xl text-green-700">Incident: {formValues.incident}</h1>
         <div className="flex space-x-4">
-          <button className="bg-[#FF9B00] text-white py-2 px-4 rounded">Print</button>
-          <button className="bg-[#007100] text-white py-2 px-4 rounded" onClick={handleBackToTable}>
+          <button className="bg-[#FF9B00] text-white py-2 px-4 rounded" onClick={() => navigate('/reports')}>Print</button>
+          <button className="bg-[#007100] text-white py-2 px-4 rounded" onClick={() => navigate('/reports')}>
             Done
           </button>
         </div>
@@ -57,7 +82,7 @@ const ReportDetails = ({ selectedUser, handleBackToTable }) => {
           <DetailField
             label="Reporter's Name"
             name="reporterName"
-            value={formValues.reporterName || "JC Vanny Mill Saledaien"}
+            value={formValues.reporterName}
             editMode={editMode}
             onEdit={handleEditClick}
             onSave={handleSaveClick}
@@ -84,7 +109,7 @@ const ReportDetails = ({ selectedUser, handleBackToTable }) => {
           <DetailField
             label="Landmark"
             name="landmark"
-            value={formValues.landmark || "Zone - 2"}
+            value={formValues.landmark}
             editMode={editMode}
             onEdit={handleEditClick}
             onSave={handleSaveClick}
@@ -102,7 +127,7 @@ const ReportDetails = ({ selectedUser, handleBackToTable }) => {
           <DetailField
             label="Town/City"
             name="townCity"
-            value={formValues.townCity || "El Salvador City"}
+            value={formValues.townCity}
             editMode={editMode}
             onEdit={handleEditClick}
             onSave={handleSaveClick}
