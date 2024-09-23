@@ -1,31 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import starIcon from '../assets/Star.svg'; // Adjust the path as needed
-import starIconChecked from '../assets/Star-checked.svg'; // Adjust the path as needed
-import checkIcon from '../assets/check.svg'; // Adjust the path as needed
-import uncheckIcon from '../assets/uncheck.svg'; // Adjust the path as needed
+import starIcon from '../assets/Star.svg';
+import starIconChecked from '../assets/Star-checked.svg';
+import checkIcon from '../assets/check.svg';
+import uncheckIcon from '../assets/uncheck.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import '@fontsource/inter'; // Import Inter font
+import '@fontsource/inter'; 
 
 const SendAlert = () => {
-  const [alerts, setAlerts] = useState([
-    {
-      id: 1,
-      subject: 'All',
-      message: 'PAHIBALO: Tanan lumulupyo sa siyudad, adunay umaabot nga...',
-      time: '8:38 AM',
-    },
-    {
-      id: 2,
-      subject: 'Barangay Pedro sa Baculio',
-      message: 'PAHIBALO: Gihikayt ang tanan nga mu-bakwit na sa evacuation...',
-      time: '8:38 AM',
-    },
-  ]);
+  const [alerts, setAlerts] = useState([]);
   const [selectedAlert, setSelectedAlert] = useState(null);
   const [starredAlerts, setStarredAlerts] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAlerts = async () => {
+      try {
+        const response = await fetch('/api/alerts/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch alerts');
+        }
+        const data = await response.json();
+        setAlerts(data);
+      } catch (error) {
+        console.error('Error fetching alerts:', error);
+      }
+    };
+
+    fetchAlerts();
+  }, []);
 
   const handleSelectAlert = (alertId) => {
     setSelectedAlert(alertId === selectedAlert ? null : alertId);
@@ -113,7 +117,7 @@ const SendAlert = () => {
         </table>
       </div>
       <div className="flex justify-between items-center mt-4">
-        <div>Showing 1-2 of 2</div>
+        <div>Showing {alerts.length} of {alerts.length}</div>
         <div className="flex items-center">
           <button className="border p-2 mr-2 rounded">&lt;</button>
           <button className="border p-2 rounded">&gt;</button>

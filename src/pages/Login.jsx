@@ -14,23 +14,28 @@ function Login() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
-    // try {
-    //   const response = await axios.post(API_LOGIN_ENDPOINT, { email, password });
-    //   console.log('Login successful:', response.data);
-    //   localStorage.setItem('token', response.data.token);
-    //   navigate('/home');
-    // } catch (error) {
-    //   console.error('Login failed:', error.response ? error.response.data : error.message);
-    //   setError('Invalid email or password');
-    // }
+    setError(''); // Reset error
 
     try {
-      navigate('/dashboard');
+        const response = await axios.post(API_LOGIN_ENDPOINT, { username: email, password });
+        console.log('Login successful:', response.data);
+        
+        // Save token
+        localStorage.setItem('token', response.data.token);
+        
+        // Check if the user is admin and navigate accordingly
+        if (response.data.isadmin) {
+            navigate('/Dashboard'); // Admin specific route
+        } else {
+            navigate('/UserDashboard'); // Regular user route
+        }
     } catch (error) {
-
+        console.error('Login failed:', error.response ? error.response.data : error.message);
+        setError('Invalid username or password');
     }
-  };
+};
+
+
 
   return (
     <div className="flex justify-center items-center h-screen">
