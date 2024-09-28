@@ -23,7 +23,7 @@ function Login() {
         // Save token
         localStorage.setItem('token', response.data.token);
         
-        // Check if the user is admin and navigate accordingly
+        // Check if the user is admin and navigate accordingly 
         if (response.data.isadmin) {
             navigate('/Dashboard'); // Admin specific route
         } else {

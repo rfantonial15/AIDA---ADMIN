@@ -5,6 +5,7 @@ import filterIcon from "../assets/Filter.svg";
 import DeleteModal from "../components/deletemodal"; // Adjust the path as needed
 import DoneDeleteModal from "../components/donedelete"; // Adjust the path as needed
 import '@fontsource/inter'; // Import Inter font
+import axios from "axios";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -17,34 +18,12 @@ const UserManagement = () => {
   const [showDoneDeleteModal, setShowDoneDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
+  // Fetch user data from the API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const mockUsers = [
-          {
-            id: "001",
-            firstname: "Watashi",
-            lastname: "Tashi",
-            email: "Watashitashi@gmail.com",
-            phone: 9058329729,
-            barangay: "Poblacion",
-            date: "06-18-24",
-            incident: "Theft",
-            manage: "Delete",
-          },
-          {
-            id: "002",
-            firstname: "King",
-            lastname: "Kong",
-            email: "Kingkong@gmail.com",
-            phone: 9058329729,
-            barangay: "Taytay",
-            date: "06-19-24",
-            incident: "Robbery",
-            manage: "Delete",
-          },
-        ];
-        setUsers(mockUsers);
+        const response = await axios.get('http://127.0.0.1:8000/api/users/');
+        setUsers(response.data); // Set the fetched users
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -53,6 +32,7 @@ const UserManagement = () => {
     fetchData();
   }, []);
 
+  // Filter users based on the search criteria
   useEffect(() => {
     const filteredData = users.filter(
       (user) =>
@@ -75,6 +55,7 @@ const UserManagement = () => {
 
   const handleDeleteUser = (userId) => {
     console.log(`Deleting user with ID: ${userId}`);
+    // Ideally, you would also call an API to delete the user
     setUsers(users.filter(user => user.id !== userId));
     setShowDeleteModal(false);
     setShowDoneDeleteModal(true);
@@ -96,7 +77,7 @@ const UserManagement = () => {
   return (
     <div className="p-8">
       <h1 className="font-bold text-3xl text-green-700 mb-8">User Management</h1>
-      <div className="">
+      <div>
         <div className="flex justify-between items-center mb-4 space-x-2">
           <div className="filter-card flex items-center border rounded-lg bg-white">
             <div className="flex items-center border-r p-2">
