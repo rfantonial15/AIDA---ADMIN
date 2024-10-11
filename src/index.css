@@ -1,18 +1,128 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-/* Adjusted CSS for the Report component */
+:root {
+  --bs-green: #007100;
+  --bs-lightgreen: #D9EAD9;
+  --bs-red: #E60000;
+  --bs-lightgray: #F1F4F9;
+  --bs-bglightgray: #F5F6FA;
+  --bs-gray: #67696D;
+  --bs-mintgreen: #00B69B;
+  --bs-lightyellow: #FAFFCF;
+  --bs-hoverlightgray: #FCFDFD;
+}
 
 body {
   font-family: 'Inter', sans-serif;
 }
 
-.bold-text {
-  font-family: 'Inter', sans-serif;
+.text-green {
+  color: var(--bs-green);
+}
+
+.bg-green {
+  background-color: var(--bs-green);
+}
+
+.text-lightgreen {
+  color: var(--bs-lightgreen);
+}
+
+.bg-lightgreen {
+  background-color: var(--bs-lightgreen);
+}
+
+.text-red {
+  color: var(--bs-red);
+}
+
+.bg-red {
+  background-color: var(--bs-red);
+}
+
+.text-lightgray {
+  color: var(--bs-lightgray);
+}
+
+.bg-lightgray {
+  background-color: var(--bs-lightgray);
+}
+
+.bg-hoverlightgray {
+  background-color: var(--bs-hoverlightgray);
+}
+
+.bg-bglightgray {
+  background-color: var(--bs-bglightgray);
+}
+
+.text-gray {
+  color: var(--bs-gray);
+}
+
+.bg-gray {
+  background-color: var(--bs-gray);
+}
+
+.text-mintgreen {
+  color: var(--bs-mintgreen);
+}
+
+.bg-mintgreen {
+  background-color: var(--bs-mintgreen);
+}
+
+.text-lightyellow {
+  color: var(--bs-lightyellow);
+}
+
+.bg-lightyellow {
+  background-color: var(--bs-lightyellow);
+}
+
+.font-inter-thin {
+  font-weight: 100;
+}
+
+.font-inter-extralight {
+  font-weight: 200;
+}
+
+.font-inter-light {
+  font-weight: 300;
+}
+
+.font-inter-normal {
+  font-weight: 400;
+}
+
+.font-inter-medium {
+  font-weight: 500;
+}
+
+.font-inter-bold {
   font-weight: 700;
 }
 
+.font-size-xs {
+  font-size: 12px;
+}
+
+.font-size-sm {
+  font-size: 14px;
+}
+
+.font-size-md {
+  font-size: 16px;
+}
+
+.font-size-lg {
+  font-size: 18px;
+}
+
+.font-size-xl {
+  font-size: 24px;
+}
 
 .filter-card {
     display: flex;
@@ -22,21 +132,16 @@ body {
     margin-bottom: 20px;
   }
   
-  /* .filter-card select,
-  .filter-card button {
-    flex: 1;
-  } */
-  
-  .search-bar-container {
+.search-bar-container {
     height: 65px;
     width: 100%;
-    max-width: 450px; /* Adjust max-width as needed */
+    max-width: 450px;
   }
   
   .search-bar-container input {
-    width: calc(100% - 30px); /* Adjust width as needed */
+    width: calc(100% - 30px); 
     padding: 10px;
-    padding-left: 40px; /* Ensure enough space for the search icon */
+    padding-left: 40px;
     border: 1px solid #ccc;
     border-radius: 8px;
     outline: none;
@@ -49,7 +154,3 @@ body {
     transform: translateY(-50%);
     color: #ccc;
   }
-
-
-  
-  

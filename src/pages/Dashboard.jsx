@@ -1,16 +1,16 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
-import PendingAlerts from '../assets/dashboard/Pending Alerts Icon.svg';
-import TotalAlerts from '../assets/dashboard/Total Alerts Icon.svg';
-import TotalReports from '../assets/dashboard/Total Report Icon.svg';
-import TotalUsers from '../assets/dashboard/Total User Icon.svg';
-import TrendDown from '../assets/dashboard/trending-down.svg';
-import TrendUp from '../assets/dashboard/trending-up.svg';
-import CarCrashIcon from '../assets/dashboard/Car.svg';
-import FireIcon from '../assets/dashboard/Fire.svg';
+import PendingAlerts from "../assets/dashboard/pending-alerts-icon.svg";
+import TotalAlerts from "../assets/dashboard/total-alerts-icon.svg";
+import TotalReports from "../assets/dashboard/total-report-icon.svg";
+import TotalUsers from "../assets/dashboard/total-user-icon.svg";
+import TrendDown from "../assets/dashboard/trending-down.svg";
+import TrendUp from "../assets/dashboard/trending-up.svg";
+import CarCrashIcon from "../assets/dashboard/Car.svg";
+import FireIcon from "../assets/dashboard/Fire.svg";
 import Image from '../assets/dashboard/accidentimage.png';
-import '@fontsource/inter'; // Import Inter font
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -69,6 +69,7 @@ const Dashboard = () => {
     setFilteredUsers(filteredData);
   }, [filter, dateFilter, nameFilter, incidentFilter, monthFilter, users]);
 
+  // eslint-disable-next-line no-unused-vars
   const resetFilters = () => {
     setFilter('');
     setDateFilter('');
@@ -158,7 +159,11 @@ const Dashboard = () => {
                         e.stopPropagation();
                         toggleStatus(index);
                       }}
-                      className={`px-2 py-1 rounded ${user.status === 'Done' ? 'bg-green-500' : 'bg-yellow-500'} text-white`}
+                      className={`w-24 px-2 py-2 rounded ${
+                        user.status === "Done"
+                          ? "bg-green text-white"
+                          : "bg-lightyellow text-black"
+                      }`}
                     >
                       {user.status}
                     </button>
@@ -194,22 +199,32 @@ const Dashboard = () => {
   );
 };
 
-const DashboardCard = ({ title, count, trend, trendIcon, icon }) => (
-  <div className="p-4 rounded-lg bg-white flex flex-col relative">
-    <div className="flex justify-between items-start">
-      <h2 className="font-bold text-gray-500">{title}</h2>
+const DashboardCard = ({ title, count, trend, trendIcon, icon }) => {
+  const isTrendUp = trend.includes("Up");
+  const trendColor = isTrendUp ? "text-mintgreen" : "text-red-500";
+
+  const [percentage, ...textArray] = trend.split(" ");
+  const text = textArray.join(" ");
+
+  return (
+    <div className="p-4 rounded-lg bg-white flex flex-col relative">
+      <div className="flex justify-between items-start">
+        <h2 className="font-bold text-gray-500">{title}</h2>
+      </div>
+      <div className="absolute top-2 right-2 m-2">
+        <img src={icon} alt={`${title} Icon`} className="w-16 h-16" />
+      </div>
+      <div className="flex-grow flex items-center justify-start mt-4">
+        <p className="text-2xl font-bold">{count}</p>
+      </div>
+      <div className="flex items-center mt-6">
+        <img src={trendIcon} alt="Trend Icon" className="mr-2 w-6 h-6" />
+        <p className="text-gray-500">
+          <span className={trendColor}>{percentage}</span> {text}
+        </p>
+      </div>
     </div>
-    <div className="absolute top-2 right-2 m-2">
-      <img src={icon} alt={`${title} Icon`} className="w-16 h-16"/>
-    </div>
-    <div className="flex-grow flex items-center justify-start mt-4">
-      <p className="text-2xl font-bold">{count}</p>
-    </div>
-    <div className="flex items-center mt-4">
-      <img src={trendIcon} alt="Trend Icon" className="mr-2 w-6 h-6" />
-      <p className="text-gray-500">{trend}</p>
-    </div>
-  </div>
-);
+  );
+};
 
 export default Dashboard;

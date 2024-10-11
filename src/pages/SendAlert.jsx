@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import starIcon from '../assets/Star.svg';
-import starIconChecked from '../assets/Star-checked.svg';
-import checkIcon from '../assets/check.svg';
-import uncheckIcon from '../assets/uncheck.svg';
+import starIcon from '../assets/alert/star.svg';
+import starIconChecked from '../assets/alert/star-checked.svg';
+import checkIcon from '../assets/alert/check.svg';
+import uncheckIcon from '../assets/alert/uncheck.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import '@fontsource/inter'; 
 
 const SendAlert = () => {
   const [alerts, setAlerts] = useState([]);

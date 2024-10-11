@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import sentIcon from '../assets/sent.svg'; // Adjust the path as needed
+import sentIcon from '../assets/alert/sent.svg';
 
 const AlertModal = ({ show }) => {
   const navigate = useNavigate();
 
   const handleContinue = () => {
-    navigate('/sendalert'); // Adjust the path as needed
+    navigate('/sendalert');
   };
 
   if (!show) {

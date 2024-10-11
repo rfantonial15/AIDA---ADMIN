@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import deleteIcon from '../assets/navbar/delete.svg'; // Adjust the path as needed
+import deleteIcon from '../assets/usermanagement/delete.svg';
 
 const DeleteModal = ({ show, user, onConfirmDelete, onCancel }) => {
   if (!show) {

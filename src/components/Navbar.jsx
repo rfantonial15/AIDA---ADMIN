@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../assets/AIDA-Logo.png';
-import DashboardLogo from '../assets/navbar/dashboard-line.png';
-import DashboardLogoGreen from '../assets/navbar/dashboard-line-green.png';
-import ReportLogo from '../assets/navbar/report-line.png';
-import ReportLogoGreen from '../assets/navbar/report-line-green.png';
-import UserLogo from '../assets/navbar/user-line.png';
-import UserLogoGreen from '../assets/navbar/user-line-green.png';
-import AlertLogo from '../assets/navbar/alert-line.png';
-import AlertLogoGreen from '../assets/navbar/alert-line-green.png';
-import SettingLogo from '../assets/navbar/setting-line.png';
-import SettingLogoGreen from '../assets/navbar/setting-line-green.png';
-import LogoutLogo from '../assets/navbar/logout-line.png';
-import '@fontsource/inter'; // Import Inter font
+import DashboardLogo from '../assets/navbar/dashboard-line.svg';
+import DashboardLogoGreen from '../assets/navbar/dashboard-line-green.svg';
+import ReportLogo from '../assets/navbar/report-line.svg';
+import ReportLogoGreen from '../assets/navbar/report-line-green.svg';
+import UserLogo from '../assets/navbar/user-line.svg';
+import UserLogoGreen from '../assets/navbar/user-line-green.svg';
+import AlertLogo from '../assets/navbar/alert-line.svg';
+import AlertLogoGreen from '../assets/navbar/alert-line-green.svg';
+import SettingLogo from '../assets/navbar/setting-line.svg';
+import SettingLogoGreen from '../assets/navbar/setting-line-green.svg';
+import LogoutLogo from '../assets/navbar/log-out-line.svg';
 
 const Navbar = ({ children }) => {
   const [dateTime, setDateTime] = useState(new Date());
@@ -40,7 +39,7 @@ const Navbar = ({ children }) => {
         <div className="pt-10 pl-32">
           <img src={Logo} alt="AIDA Logo" className="w-16" />
         </div>
-        <nav className="flex-grow pt-10 px-8">
+        <nav className="flex-grow pt-10 px-8 font-size-md">
           <ul>
             <NavItem
               to="/dashboard"
@@ -83,7 +82,7 @@ const Navbar = ({ children }) => {
           <NavLink
             to="/login"
             className={({ isActive }) =>
-              isActive ? "flex items-center p-4 bg-red-200" : "flex items-center p-4 rounded-lg bg-red-500 hover:bg-red-600"
+              isActive ? "flex items-center p-4 bg-red" : "flex items-center p-4 rounded-lg bg-red hover:bg-red"
             }
           >
             <img src={LogoutLogo} alt="Logout Logo" className="mr-5" />
@@ -94,8 +93,8 @@ const Navbar = ({ children }) => {
       <main className="flex-grow">
         <header>
           <div className="flex justify-between items-center bg-white py-4 pl-8 pr-8">
-            <p className="text-green-700">City Government of El Salvador - City Disaster Risk Reduction Management Office</p>
-            <p className="text-green-700 font-medium">{formatDate(dateTime)}</p>
+            <p className="text-green font-size-sm">City Government of El Salvador - City Disaster Risk Reduction Management Office</p>
+            <p className="text-green font-inter-bold font-size-sm">{formatDate(dateTime)}</p>
           </div>
         </header>
         <div>{children}</div>
@@ -109,11 +108,11 @@ const NavItem = ({ to, isActive, icon, activeIcon, label }) => (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        isActive ? "flex items-center rounded-lg p-4 bg-green-200 text-white" : "flex items-center p-4 rounded-lg bg-white hover:bg-green-200"
+        isActive ? "flex items-center rounded-lg p-4 bg-lightgreen text-white" : "flex items-center p-4 rounded-lg bg-white hover:bg-lightgreen"
       }
     >
       <img src={isActive ? activeIcon : icon} alt={`${label} Logo`} className="mr-5" />
-      <span className={isActive ? 'text-green-700' : 'text-gray-500'}>{label}</span>
+      <span className={isActive ? 'text-green' : 'text-gray'}>{label}</span>
     </NavLink>
   </li>
 );

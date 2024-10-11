@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faExpandArrowsAlt, faTimes, faPaperclip, faLink, faImage, faTrashAlt, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
@@ -56,6 +57,7 @@ const AlertMessage = () => {
     window.gapi.auth2.getAuthInstance().signIn();
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleSignoutClick = () => {
     window.gapi.auth2.getAuthInstance().signOut();
   };
@@ -156,7 +158,7 @@ const AlertMessage = () => {
   };
 
   const handleClose = () => {
-    navigate('/send-alert');
+    navigate('/sendalert');
   };
 
   const handleMinimize = () => {
@@ -169,13 +171,13 @@ const AlertMessage = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    navigate('/send-alert'); 
+    navigate('/sendalert'); 
   };
 
   return (
     <div className="p-8">
       <h1 className="font-bold text-3xl text-green-700 mb-4">Send Alerts</h1>
-      <div className="bg-white shadow-md rounded-lg max-w-6xl mx-auto">
+      <div className="bg-white shadow-md rounded-lg mx-auto">
         <div className="bg-green-700 flex justify-between items-center p-4 rounded-t-lg">
           <h2 className="font-bold text-white">New Message</h2>
           <div className="flex space-x-2 text-white">

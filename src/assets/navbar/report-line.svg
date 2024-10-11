@@ -1,0 +1,18 @@
+<svg width="22" height="24" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="22" height="24" fill="#1E1E1E"/>
+<g id="3. Dashboard" clip-path="url(#clip0_201_403)">
+<rect width="1920" height="1080" transform="translate(-76 -341)" fill="#F5F6FA"/>
+<rect id="Rectangle" x="-76" y="-341" width="468" height="1080" fill="white"/>
+<g id="Sidebar Menu">
+<rect width="377" height="766" transform="translate(-31 -100)" fill="white"/>
+<g id="Reports">
+<path id="report-line" d="M9.77778 6H12.2222V18H9.77778V6ZM14.6667 10.8H17.1111V18H14.6667V10.8ZM4.88889 13.2H7.33333V18H4.88889V13.2ZM14.6667 2.4H2.44444V21.6H19.5556V7.2H14.6667V2.4ZM0 1.19016C0 0.53286 0.546932 0 1.22039 0H15.8889L21.9996 6L22 22.791C22 23.4587 21.4562 24 20.7858 24H1.21416C0.543596 24 0 23.4536 0 22.8098V1.19016Z" fill="#67696D"/>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_201_403">
+<rect width="1920" height="1080" fill="white" transform="translate(-76 -341)"/>
+</clipPath>
+</defs>
+</svg>

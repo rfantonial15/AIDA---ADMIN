@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
-import filterIcon from "../assets/Filter.svg";
-import DeleteModal from "../components/deletemodal"; // Adjust the path as needed
-import DoneDeleteModal from "../components/donedelete"; // Adjust the path as needed
-import '@fontsource/inter'; // Import Inter font
+import { faSearch} from "@fortawesome/free-solid-svg-icons";
+import filterIcon from "../assets/usermanagement/filter.svg";
+import resetIcon from "../assets/report/reset.svg"
+import DeleteModal from "../components/DeleteModal";
+import DoneDeleteModal from "../components/DoneDelete";
 import axios from "axios";
 
 const UserManagement = () => {
@@ -18,12 +18,11 @@ const UserManagement = () => {
   const [showDoneDeleteModal, setShowDoneDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Fetch user data from the API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/users/');
-        setUsers(response.data); // Set the fetched users
+        setUsers(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -127,7 +126,7 @@ const UserManagement = () => {
               className="p-2 border-gray-300 rounded-none flex items-center focus:outline-none focus:ring focus:ring-blue-200"
               style={{ height: "40.5px" }}
             >
-              <FontAwesomeIcon icon={faSyncAlt} className="text-red-500 mr-2" />
+              <img src={resetIcon} className="text-red-500 mr-2" />
               <span className="text-red-500">Reset Filter</span>
             </button>
           </div>

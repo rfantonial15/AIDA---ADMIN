@@ -1,9 +1,9 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
-import sampleImage from "../assets/Bg.png"; // Adjust the path as needed
-import '@fontsource/inter'; // Import Inter font
+import sampleImage from "../assets/Bg.png"; 
 
 const ReportDetails = () => {
   const { id } = useParams();

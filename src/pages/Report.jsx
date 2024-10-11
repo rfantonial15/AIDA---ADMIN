@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faSyncAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
-import filterIcon from "../assets/Filter.svg";
-import sampleImage from "../assets/Bg.png"; // Adjust the path as needed
-import '@fontsource/inter'; // Import Inter font
+import { faSearch, faEdit } from "@fortawesome/free-solid-svg-icons";
+import filterIcon from "../assets/report/filter.svg";
+import resetIcon from "../assets/report/reset.svg"
+import sampleImage from "../assets/Bg.png";
 
 // Custom hook for debouncing input
 const useDebounce = (value, delay) => {
@@ -171,7 +172,7 @@ const Report = () => {
             ))}
           </select>
           <button onClick={resetFilters} className="p-2 border-gray-300 rounded-none flex items-center focus:outline-none focus:ring focus:ring-blue-200" style={{ height: "40.5px" }}>
-            <FontAwesomeIcon icon={faSyncAlt} className="text-red-500 mr-2" />
+            <img src={resetIcon} className="text-red-500 mr-2" />
             <span className="text-red-500">Reset Filter</span>
           </button>
         </div>
@@ -201,16 +202,16 @@ const Report = () => {
           <tbody className="bg-white">
   {filteredUsers.map((user, index) => (
     <tr key={index} className="hover:bg-gray-100 border-b" onClick={() => handleRowClick(user)}>
-      <td className="py-2 px-4">{user.date_time.split('T')[0]}</td> {/* Adjust for date */}
-      <td className="py-2 px-4">{user.date_time.split('T')[1].split('.')[0]}</td> {/* Adjust for time */}
-      <td className="py-2 px-4">{user.incident_type}</td>
-      <td className="py-2 px-4">{user.victim_name}</td>
-      <td className="py-2 px-4">{user.victim_age}</td>
-      <td className="py-2 px-4">{user.victim_sex}</td>
-      <td className="py-2 px-4">{user.barangay}</td>
-      <td className="py-2 px-4">{user.spot_report}</td>
-      <td className="py-2 px-4">{user.duty}</td>
-      <td className="py-2 px-4">{user.remarks}</td>
+      <td className="py-4 px-4">{user.date_time.split('T')[0]}</td> {/* Adjust for date */}
+      <td className="py-4 px-4">{user.date_time.split('T')[1].split('.')[0]}</td> {/* Adjust for time */}
+      <td className="py-4 px-4">{user.incident_type}</td>
+      <td className="py-4 px-4">{user.victim_name}</td>
+      <td className="py-4 px-4">{user.victim_age}</td>
+      <td className="py-4 px-4">{user.victim_sex}</td>
+      <td className="py-4 px-4">{user.barangay}</td>
+      <td className="py-4 px-4">{user.spot_report}</td>
+      <td className="py-4 px-4">{user.duty}</td>
+      <td className="py-4 px-4">{user.remarks}</td>
     </tr>
   ))}
 </tbody>
