@@ -6,15 +6,13 @@ import resetIcon from "../assets/report/reset.svg";
 import DeleteModal from "../components/DeleteModal";
 import DoneDeleteModal from "../components/DoneDelete";
 import axios from "axios";
-import { format, isValid } from "date-fns"; // Ensure date-fns is imported
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [dateFilter, setDateFilter] = useState("");
+  const [barangayFilter, setBarangayFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
-  const [incidentFilter, setIncidentFilter] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showDoneDeleteModal, setShowDoneDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -33,46 +31,31 @@ const UserManagement = () => {
     fetchData();
   }, []);
 
-  // Convert registration date into months (e.g., "January 2024")
-  const uniqueMonths = [
-    ...new Set(
-      users
-        .map(user => {
-          const date = new Date(user.date);
-          return isValid(date) ? format(date, "MMMM yyyy") : null; // Validate date
-        })
-        .filter(Boolean) // Remove null values from invalid dates
-    ),
-  ];
+  // Unique barangay values
+  const uniqueBarangays = [...new Set(users.map(user => user.barangay))];
 
   // Unique first names
-  const uniqueFirstNames = [
-    ...new Set(users.map(user => user.firstname)),
-  ];
+  const uniqueFirstNames = [...new Set(users.map(user => user.firstname))];
 
-  // Hardcoded incidents: 'car crash' or 'fire'
-  const incidentOptions = ["car crash", "fire"];
-
-  // Filter users based on the search criteria
+  // Filter users based on search criteria
   useEffect(() => {
     const filteredData = users.filter(
       user =>
-        user.firstname.toLowerCase().includes(filter.toLowerCase()) &&
-        (dateFilter === "" ||
-          (isValid(new Date(user.date)) &&
-            format(new Date(user.date), "MMMM yyyy") === dateFilter)) &&
-        (nameFilter === "" ||
-          user.firstname.toLowerCase().includes(nameFilter.toLowerCase())) &&
-        (incidentFilter === "" || user.incident === incidentFilter)
+        (user.firstname.toLowerCase().includes(filter.toLowerCase()) ||
+          user.lastname.toLowerCase().includes(filter.toLowerCase()) ||
+          user.email.toLowerCase().includes(filter.toLowerCase()) ||
+          user.phone.toLowerCase().includes(filter.toLowerCase()) ||
+          user.barangay.toLowerCase().includes(filter.toLowerCase())) &&
+        (barangayFilter === "" || user.barangay === barangayFilter) &&
+        (nameFilter === "" || user.firstname.toLowerCase().includes(nameFilter.toLowerCase()))
     );
     setFilteredUsers(filteredData);
-  }, [filter, dateFilter, nameFilter, incidentFilter, users]);
+  }, [filter, barangayFilter, nameFilter, users]);
 
   const resetFilters = () => {
     setFilter("");
-    setDateFilter("");
+    setBarangayFilter("");
     setNameFilter("");
-    setIncidentFilter("");
   };
 
   const handleDeleteUser = userId => {
@@ -108,18 +91,6 @@ const UserManagement = () => {
               <span>Filter By</span>
             </div>
             <select
-              value={dateFilter}
-              onChange={e => setDateFilter(e.target.value)}
-              className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
-            >
-              <option value="">Month</option>
-              {uniqueMonths.map((month, index) => (
-                <option key={index} value={month}>
-                  {month}
-                </option>
-              ))}
-            </select>
-            <select
               value={nameFilter}
               onChange={e => setNameFilter(e.target.value)}
               className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
@@ -132,14 +103,14 @@ const UserManagement = () => {
               ))}
             </select>
             <select
-              value={incidentFilter}
-              onChange={e => setIncidentFilter(e.target.value)}
+              value={barangayFilter}
+              onChange={e => setBarangayFilter(e.target.value)}
               className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
             >
-              <option value="">Incident</option>
-              {incidentOptions.map((incident, index) => (
-                <option key={index} value={incident}>
-                  {incident}
+              <option value="">Barangay</option>
+              {uniqueBarangays.map((barangay, index) => (
+                <option key={index} value={barangay}>
+                  {barangay}
                 </option>
               ))}
             </select>
