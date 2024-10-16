@@ -49,7 +49,7 @@ const AlertDetailView = () => {
       <div className="bg-white shadow-md rounded-lg mx-auto p-6">
         <div className="flex justify-between items-center mb-4">
           <button className="px-4 py-1 bg-green-100 text-green-700 rounded">All</button>
-          <p className="text-green text-md">{alert.time}</p>
+          <td className="p-2 text-center">{alert.timeDate}</td>
         </div>
     
         <div className="border-t border-gray-200 my-4"></div>
