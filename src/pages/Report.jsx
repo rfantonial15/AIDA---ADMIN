@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faEdit } from "@fortawesome/free-solid-svg-icons";
 import filterIcon from "../assets/report/filter.svg";
-import resetIcon from "../assets/report/reset.svg"
+import resetIcon from "../assets/report/reset.svg";
 import sampleImage from "../assets/Bg.png";
 
 // Custom hook for debouncing input
@@ -24,13 +24,13 @@ const useDebounce = (value, delay) => {
 };
 
 const Report = () => {
-  const [users, setUsers] = useState([]);
+  const [reports, setReports] = useState([]);
   const [filter, setFilter] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [filteredReports, setFilteredReports] = useState([]);
   const [dateFilter, setDateFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
-  const [incidentFilter, setIncidentFilter] = useState("");
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [barangayFilter, setBarangayFilter] = useState("");
+  const [selectedReport, setSelectedReport] = useState(null);
   const [editMode, setEditMode] = useState(null);
   const [formValues, setFormValues] = useState({});
 
@@ -44,7 +44,7 @@ const Report = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setUsers(data);
+        setReports(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -52,37 +52,44 @@ const Report = () => {
     fetchData();
   }, []);
 
+  // Generate unique options for filters based on backend data
+  const uniqueDates = [...new Set(reports.map(report => report.date_time.split('T')[0]))];
+  const uniqueVictimNames = [...new Set(reports.map(report => report.victim_name))];
+  const uniqueBarangays = [...new Set(reports.map(report => report.barangay))];
+
+  // Filter reports based on the search criteria
   useEffect(() => {
-    const filteredData = users.filter((user) => {
-      const victimName = user.victimName || "";
-      const date = user.date || "";
-      const incident = user.incident || "";
+    const filteredData = reports.filter((report) => {
+      const victimName = report.victim_name || "";
+      const date = report.date_time.split('T')[0] || "";
+      const barangay = report.barangay || "";
 
       return (
-        victimName.toLowerCase().includes(debouncedFilter.toLowerCase()) &&
+        (victimName.toLowerCase().includes(debouncedFilter.toLowerCase()) ||
+          date.includes(debouncedFilter) ||
+          barangay.toLowerCase().includes(debouncedFilter)) &&
         (dateFilter === "" || date === dateFilter) &&
         (nameFilter === "" || victimName === nameFilter) &&
-        (incidentFilter === "" || incident === incidentFilter)
+        (barangayFilter === "" || barangay === barangayFilter)
       );
     });
-    setFilteredUsers(filteredData);
-  }, [debouncedFilter, dateFilter, nameFilter, incidentFilter, users]);
+    setFilteredReports(filteredData);
+  }, [debouncedFilter, dateFilter, nameFilter, barangayFilter, reports]);
 
   const resetFilters = () => {
     setFilter("");
     setDateFilter("");
     setNameFilter("");
-    setIncidentFilter("");
+    setBarangayFilter("");
   };
 
-  const handleRowClick = (user) => {
-    console.log("Selected user:", user); // Debugging
-    setSelectedUser(user);
-    setFormValues(user);
+  const handleRowClick = (report) => {
+    setSelectedReport(report);
+    setFormValues(report);
   };
 
   const handleBackToTable = () => {
-    setSelectedUser(null);
+    setSelectedReport(null);
   };
 
   const handleInputChange = (e) => {
@@ -95,16 +102,15 @@ const Report = () => {
   };
 
   const handleSaveClick = () => {
-    console.log("Saving values:", formValues); // Debugging
-    setSelectedUser(formValues);
+    setSelectedReport(formValues);
     setEditMode(null);
   };
 
-  if (selectedUser) {
+  if (selectedReport) {
     return (
       <div className="p-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="font-bold text-3xl text-green-700">Incident: {selectedUser.incident}</h1>
+          <h1 className="font-bold text-3xl text-green-700">Incident: {selectedReport.incident_type}</h1>
           <div className="flex space-x-4">
             <button className="bg-[#FF9B00] text-white py-2 px-4 rounded">Print</button>
             <button className="bg-[#007100] text-white py-2 px-4 rounded" onClick={handleBackToTable}>Done</button>
@@ -114,7 +120,7 @@ const Report = () => {
           <img src={sampleImage} alt="Incident" className="h-64 w-full object-cover rounded-lg" />
           <div className="w-full h-64 rounded-lg overflow-hidden">
             <iframe
-              src={`https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${selectedUser.address}`}
+              src={`https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${selectedReport.latitude},${selectedReport.longitude}`}
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -125,17 +131,17 @@ const Report = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 mb-4 bg-white p-4 rounded-lg shadow-lg">
-        {["reporterName", "date", "time", "landmark", "address", "townCity", "victimName", "age", "sex", "spot", "duty", "remarks"].map((field, index) => (
-  <DetailField
-    key={index}
-    label={capitalizeFirstLetter(field.replace(/([A-Z])/g, ' $1'))}
-    name={field}
-    value={formValues[field] || ""} // Ensure formValues contains the field
-    editMode={editMode}
-    onEdit={handleEditClick}
-    onSave={handleSaveClick}
-    onChange={handleInputChange}
-  />
+          {["victim_name", "victim_age", "victim_sex", "incident_type", "barangay", "city", "date_time", "landmark", "spot_report", "duty", "remarks"].map((field, index) => (
+            <DetailField
+              key={index}
+              label={capitalizeFirstLetter(field.replace(/([A-Z])/g, ' $1'))}
+              name={field}
+              value={formValues[field] || ""} // Ensure formValues contains the field
+              editMode={editMode}
+              onEdit={handleEditClick}
+              onSave={handleSaveClick}
+              onChange={handleInputChange}
+            />
           ))}
         </div>
       </div>
@@ -155,24 +161,24 @@ const Report = () => {
           </div>
           <select value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200">
             <option value="">Date</option>
-            {[...new Set(users.map(user => user.date))].map((date, index) => (
+            {uniqueDates.map((date, index) => (
               <option key={index} value={date}>{date}</option>
             ))}
           </select>
           <select value={nameFilter} onChange={(e) => setNameFilter(e.target.value)} className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200">
             <option value="">Name</option>
-            {[...new Set(users.map(user => user.victimName))].map((name, index) => (
+            {uniqueVictimNames.map((name, index) => (
               <option key={index} value={name}>{name}</option>
             ))}
           </select>
-          <select value={incidentFilter} onChange={(e) => setIncidentFilter(e.target.value)} className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200">
-            <option value="">Incident</option>
-            {[...new Set(users.map(user => user.incident))].map((incident, index) => (
-              <option key={index} value={incident}>{incident}</option>
+          <select value={barangayFilter} onChange={(e) => setBarangayFilter(e.target.value)} className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200">
+            <option value="">Barangay</option>
+            {uniqueBarangays.map((barangay, index) => (
+              <option key={index} value={barangay}>{barangay}</option>
             ))}
           </select>
           <button onClick={resetFilters} className="p-2 border-gray-300 rounded-none flex items-center focus:outline-none focus:ring focus:ring-blue-200" style={{ height: "40.5px" }}>
-            <img src={resetIcon} className="text-red-500 mr-2" />
+            <img src={resetIcon} className="text-red-500 mr-2" alt="Reset Icon" />
             <span className="text-red-500">Reset Filter</span>
           </button>
         </div>
@@ -193,29 +199,28 @@ const Report = () => {
               <th className="py-2 px-4 text-left">Name of Victim</th>
               <th className="py-2 px-4 text-left">Age</th>
               <th className="py-2 px-4 text-left">Sex</th>
-              <th className="py-2 px-4 text-left">Address</th>
+              <th className="py-2 px-4 text-left">Barangay</th>
               <th className="py-2 px-4 text-left">Spot</th>
               <th className="py-2 px-4 text-left">Duty</th>
               <th className="py-2 px-4 text-left">Remarks</th>
             </tr>
           </thead>
           <tbody className="bg-white">
-  {filteredUsers.map((user, index) => (
-    <tr key={index} className="hover:bg-gray-100 border-b" onClick={() => handleRowClick(user)}>
-      <td className="py-4 px-4">{user.date_time.split('T')[0]}</td> {/* Adjust for date */}
-      <td className="py-4 px-4">{user.date_time.split('T')[1].split('.')[0]}</td> {/* Adjust for time */}
-      <td className="py-4 px-4">{user.incident_type}</td>
-      <td className="py-4 px-4">{user.victim_name}</td>
-      <td className="py-4 px-4">{user.victim_age}</td>
-      <td className="py-4 px-4">{user.victim_sex}</td>
-      <td className="py-4 px-4">{user.barangay}</td>
-      <td className="py-4 px-4">{user.spot_report}</td>
-      <td className="py-4 px-4">{user.duty}</td>
-      <td className="py-4 px-4">{user.remarks}</td>
-    </tr>
-  ))}
-</tbody>
-
+            {filteredReports.map((report, index) => (
+              <tr key={index} className="hover:bg-gray-100 border-b" onClick={() => handleRowClick(report)}>
+                <td className="py-4 px-4">{report.date_time.split('T')[0]}</td> {/* Adjust for date */}
+                <td className="py-4 px-4">{report.date_time.split('T')[1].split('.')[0]}</td> {/* Adjust for time */}
+                <td className="py-4 px-4">{report.incident_type}</td>
+                <td className="py-4 px-4">{report.victim_name}</td>
+                <td className="py-4 px-4">{report.victim_age}</td>
+                <td className="py-4 px-4">{report.victim_sex}</td>
+                <td className="py-4 px-4">{report.barangay}</td>
+                <td className="py-4 px-4">{report.spot_report}</td>
+                <td className="py-4 px-4">{report.duty}</td>
+                <td className="py-4 px-4">{report.remarks}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
