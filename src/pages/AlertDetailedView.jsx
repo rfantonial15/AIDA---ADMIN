@@ -2,24 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const AlertDetailView = () => {
-  const { subject } = useParams(); // Get the subject from the URL
+  const { id } = useParams(); // Get the id from the URL
   const [alert, setAlert] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAlertDetails = async () => {
       try {
-        const encodedSubject = encodeURIComponent(subject);
-        const response = await fetch(`http://localhost:8000/api/alerts/?subject=${encodedSubject}`);
+        const response = await fetch(`http://localhost:8000/api/alerts/${id}`); // Fetch by ID
         if (!response.ok) {
           throw new Error('Failed to fetch alert details');
         }
         const data = await response.json();
-        if (data.length > 0) {
-          setAlert(data[0]);
-        } else {
-          setError('Alert not found');
-        }
+        setAlert(data);
       } catch (error) {
         console.error('Error fetching alert details:', error);
         setError('Failed to fetch alert details.');
@@ -27,7 +22,7 @@ const AlertDetailView = () => {
     };
 
     fetchAlertDetails();
-  }, [subject]);
+  }, [id]);
 
   if (error) {
     return <div className="p-8">Error: {error}</div>;

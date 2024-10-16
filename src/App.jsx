@@ -25,7 +25,7 @@ function App() {
           <Route path="/usermanagement" element={<Navbar><UserManagement /></Navbar>} />
           <Route path="/sendalert" element={<Navbar><SendAlert /></Navbar>} />
           <Route path="/alert-message" element={<Navbar><AlertMessage /></Navbar>} />
-          <Route path="/alert/:subject" element={<Navbar><AlertView /></Navbar>} />
+          <Route path="/alert/:id" element={<Navbar><AlertView /></Navbar>} />
           <Route path="/settings" element={<Navbar><Settings /></Navbar>} />
         </Routes>
       </div>

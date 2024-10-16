@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const SendAlert = () => {
-  const [alerts, setAlerts] = useState([]);
-  const [filteredAlerts, setFilteredAlerts] = useState([]);
+  const [alerts, setAlerts] = useState([]); // All fetched alerts
+  const [filteredAlerts, setFilteredAlerts] = useState([]); // Alerts after filtering by search
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);  // For pagination
-  const [alertsPerPage] = useState(10);  // Alerts per page
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const [alertsPerPage] = useState(10); // Alerts per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,8 +19,8 @@ const SendAlert = () => {
           throw new Error('Failed to fetch alerts');
         }
         const data = await response.json();
-        setAlerts(data);
-        setFilteredAlerts(data);
+        setAlerts(data); // Save fetched alerts
+        setFilteredAlerts(data); // Initially, no filter, show all
       } catch (error) {
         console.error('Error fetching alerts:', error);
       }
@@ -29,28 +29,30 @@ const SendAlert = () => {
     fetchAlerts();
   }, []);
 
+  // Filtered alerts based on search query
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
-    const filtered = alerts.filter((alert) =>
-      alert.subject.toLowerCase().includes(query) ||
-      alert.message.toLowerCase().includes(query)
+    const filtered = alerts.filter(
+      (alert) =>
+        alert.subject.toLowerCase().includes(query) ||
+        alert.message.toLowerCase().includes(query)
     );
     setFilteredAlerts(filtered);
-    setCurrentPage(1);  // Reset to first page after search
+    setCurrentPage(1); // Reset to first page after search
   };
 
-  const handleRowClick = (alertSubject) => {
-    const encodedSubject = encodeURIComponent(alertSubject);
-    navigate(`/alert/${encodedSubject}`);
+  const handleRowClick = (alertId) => {
+    navigate(`/alert/${alertId}`); // Redirect based on the alert ID
   };
 
   // Pagination logic
-  const indexOfLastAlert = currentPage * alertsPerPage;
-  const indexOfFirstAlert = indexOfLastAlert - alertsPerPage;
-  const currentAlerts = filteredAlerts.slice(indexOfFirstAlert, indexOfLastAlert);
-  const totalPages = Math.ceil(filteredAlerts.length / alertsPerPage);
+  const indexOfLastAlert = currentPage * alertsPerPage; // Calculate the index of the last alert on the current page
+  const indexOfFirstAlert = indexOfLastAlert - alertsPerPage; // Calculate the index of the first alert on the current page
+  const currentAlerts = filteredAlerts.slice(indexOfFirstAlert, indexOfLastAlert); // Get the current alerts for the current page
+  const totalPages = Math.ceil(filteredAlerts.length / alertsPerPage); // Calculate total pages
 
+  // Handlers for pagination
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
@@ -93,16 +95,24 @@ const SendAlert = () => {
             {currentAlerts.length > 0 ? (
               currentAlerts.map((alert) => (
                 <tr
-                  key={alert.subject}
+                  key={alert.id}
                   className="cursor-pointer border-b"
-                  onClick={() => handleRowClick(alert.subject)}
+                  onClick={() => handleRowClick(alert.id)}
                 >
                   <td className="pl-8 p-4 w-1/3">
                     <div className="flex items-center space-x-2">
                       <span className="text-right">{alert.subject}</span>
                     </div>
                   </td>
-                  <td className="p-2 text-left" style={{ maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <td
+                    className="p-2 text-left"
+                    style={{
+                      maxWidth: '300px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
                     {alert.message}
                   </td>
                   <td className="p-2 text-center">{alert.time}</td>
@@ -122,13 +132,21 @@ const SendAlert = () => {
       {/* Pagination controls */}
       <div className="flex justify-between items-center mt-4">
         <div>
-          Showing {indexOfFirstAlert + 1}-{Math.min(indexOfLastAlert, filteredAlerts.length)} of {filteredAlerts.length}
+          Showing {Math.min(indexOfFirstAlert + 1, filteredAlerts.length)}-{Math.min(indexOfLastAlert, filteredAlerts.length)} of {filteredAlerts.length}
         </div>
         <div className="flex items-center">
-          <button onClick={handlePrevPage} className="border p-2 mr-2 rounded" disabled={currentPage === 1}>
+          <button
+            onClick={handlePrevPage}
+            className="border p-2 mr-2 rounded"
+            disabled={currentPage === 1}
+          >
             &lt;
           </button>
-          <button onClick={handleNextPage} className="border p-2 rounded" disabled={currentPage === totalPages}>
+          <button
+            onClick={handleNextPage}
+            className="border p-2 rounded"
+            disabled={currentPage === totalPages}
+          >
             &gt;
           </button>
         </div>
