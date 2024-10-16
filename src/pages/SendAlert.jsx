@@ -1,10 +1,5 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import starIcon from '../assets/alert/star.svg';
-import starIconChecked from '../assets/alert/star-checked.svg';
-import checkIcon from '../assets/alert/check.svg';
-import uncheckIcon from '../assets/alert/uncheck.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,6 +7,8 @@ const SendAlert = () => {
   const [alerts, setAlerts] = useState([]);
   const [filteredAlerts, setFilteredAlerts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);  // For pagination
+  const [alertsPerPage] = useState(10);  // Alerts per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,12 +37,26 @@ const SendAlert = () => {
       alert.message.toLowerCase().includes(query)
     );
     setFilteredAlerts(filtered);
+    setCurrentPage(1);  // Reset to first page after search
   };
 
   const handleRowClick = (alertSubject) => {
-    // Use encodeURIComponent to safely include the subject in the URL
     const encodedSubject = encodeURIComponent(alertSubject);
     navigate(`/alert/${encodedSubject}`);
+  };
+
+  // Pagination logic
+  const indexOfLastAlert = currentPage * alertsPerPage;
+  const indexOfFirstAlert = indexOfLastAlert - alertsPerPage;
+  const currentAlerts = filteredAlerts.slice(indexOfFirstAlert, indexOfLastAlert);
+  const totalPages = Math.ceil(filteredAlerts.length / alertsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
   return (
@@ -75,23 +86,25 @@ const SendAlert = () => {
             <tr className="border-b">
               <th className="p-2 pl-8 rounded-tr-lg text-left">Subject</th>
               <th className="p-2 text-left">Message</th>
-              <th className="p-2 text-center rounded-tr-lg">Time</th>
+              <th className="p-2 text-center rounded-tr-lg">Date - Time</th>
             </tr>
           </thead>
           <tbody className="bg-white">
-            {filteredAlerts.length > 0 ? (
-              filteredAlerts.map((alert) => (
+            {currentAlerts.length > 0 ? (
+              currentAlerts.map((alert) => (
                 <tr
                   key={alert.subject}
-                  className="cursor-pointer"
-                  onClick={() => handleRowClick(alert.subject)}  // Navigate based on subject
+                  className="cursor-pointer border-b"
+                  onClick={() => handleRowClick(alert.subject)}
                 >
                   <td className="pl-8 p-4 w-1/3">
                     <div className="flex items-center space-x-2">
                       <span className="text-right">{alert.subject}</span>
                     </div>
                   </td>
-                  <td className="p-2 text-left">{alert.message}</td>
+                  <td className="p-2 text-left" style={{ maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {alert.message}
+                  </td>
                   <td className="p-2 text-center">{alert.time}</td>
                 </tr>
               ))
@@ -104,6 +117,21 @@ const SendAlert = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination controls */}
+      <div className="flex justify-between items-center mt-4">
+        <div>
+          Showing {indexOfFirstAlert + 1}-{Math.min(indexOfLastAlert, filteredAlerts.length)} of {filteredAlerts.length}
+        </div>
+        <div className="flex items-center">
+          <button onClick={handlePrevPage} className="border p-2 mr-2 rounded" disabled={currentPage === 1}>
+            &lt;
+          </button>
+          <button onClick={handleNextPage} className="border p-2 rounded" disabled={currentPage === totalPages}>
+            &gt;
+          </button>
+        </div>
       </div>
     </div>
   );
