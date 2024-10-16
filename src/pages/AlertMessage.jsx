@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faExpandArrowsAlt, faTimes, faPaperclip, faLink, faImage, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -109,16 +110,16 @@ const AlertMessage = () => {
 
     formData.append('links', JSON.stringify(attachedLinks));
 
-    // Send data to the backend
+    // Send data to the backend using Axios
     try {
-      const response = await fetch('http://localhost:8000/api/alerts/', {
-        method: 'POST',
-        body: formData
+      const response = await axios.post('http://localhost:8000/api/alerts/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
-      if (!response.ok) {
-        const errorText = await response.text(); // Add this to get more error details from the response
-        throw new Error(`Failed to send alert: ${errorText}`);
+      if (response.status !== 201) {
+        throw new Error(`Failed to send alert: ${response.statusText}`);
       }
 
       setSubject('');

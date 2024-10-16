@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 const AlertDetailView = () => {
@@ -9,12 +10,8 @@ const AlertDetailView = () => {
   useEffect(() => {
     const fetchAlertDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/alerts/${id}`); // Fetch by ID
-        if (!response.ok) {
-          throw new Error('Failed to fetch alert details');
-        }
-        const data = await response.json();
-        setAlert(data);
+        const response = await axios.get(`http://localhost:8000/api/alerts/${id}`); // Fetch by ID using axios
+        setAlert(response.data);
       } catch (error) {
         console.error('Error fetching alert details:', error);
         setError('Failed to fetch alert details.');

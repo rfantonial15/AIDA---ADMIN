@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -14,13 +15,9 @@ const SendAlert = () => {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/alerts/');
-        if (!response.ok) {
-          throw new Error('Failed to fetch alerts');
-        }
-        const data = await response.json();
-        setAlerts(data); // Save fetched alerts
-        setFilteredAlerts(data); // Initially, no filter, show all
+        const response = await axios.get('http://localhost:8000/api/alerts/');
+        setAlerts(response.data); // Save fetched alerts
+        setFilteredAlerts(response.data); // Initially, no filter, show all
       } catch (error) {
         console.error('Error fetching alerts:', error);
       }

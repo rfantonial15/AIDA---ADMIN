@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch} from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import filterIcon from "../assets/usermanagement/filter.svg";
-import resetIcon from "../assets/report/reset.svg"
+import resetIcon from "../assets/report/reset.svg";
 import DeleteModal from "../components/DeleteModal";
 import DoneDeleteModal from "../components/DoneDelete";
 import axios from "axios";
+import { format, isValid } from "date-fns"; // Ensure date-fns is imported
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -18,10 +19,11 @@ const UserManagement = () => {
   const [showDoneDeleteModal, setShowDoneDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
+  // Fetch users from API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/users/');
+        const response = await axios.get("http://127.0.0.1:8000/api/users/");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -31,15 +33,36 @@ const UserManagement = () => {
     fetchData();
   }, []);
 
+  // Convert registration date into months (e.g., "January 2024")
+  const uniqueMonths = [
+    ...new Set(
+      users
+        .map(user => {
+          const date = new Date(user.date);
+          return isValid(date) ? format(date, "MMMM yyyy") : null; // Validate date
+        })
+        .filter(Boolean) // Remove null values from invalid dates
+    ),
+  ];
+
+  // Unique first names
+  const uniqueFirstNames = [
+    ...new Set(users.map(user => user.firstname)),
+  ];
+
+  // Hardcoded incidents: 'car crash' or 'fire'
+  const incidentOptions = ["car crash", "fire"];
+
   // Filter users based on the search criteria
   useEffect(() => {
     const filteredData = users.filter(
-      (user) =>
+      user =>
         user.firstname.toLowerCase().includes(filter.toLowerCase()) &&
-        (dateFilter === "" || user.date === dateFilter) &&
+        (dateFilter === "" ||
+          (isValid(new Date(user.date)) &&
+            format(new Date(user.date), "MMMM yyyy") === dateFilter)) &&
         (nameFilter === "" ||
-          user.firstname.toLowerCase().includes(nameFilter.toLowerCase()) ||
-          user.lastname.toLowerCase().includes(nameFilter.toLowerCase())) &&
+          user.firstname.toLowerCase().includes(nameFilter.toLowerCase())) &&
         (incidentFilter === "" || user.incident === incidentFilter)
     );
     setFilteredUsers(filteredData);
@@ -52,15 +75,14 @@ const UserManagement = () => {
     setIncidentFilter("");
   };
 
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = userId => {
     console.log(`Deleting user with ID: ${userId}`);
-    // Ideally, you would also call an API to delete the user
     setUsers(users.filter(user => user.id !== userId));
     setShowDeleteModal(false);
     setShowDoneDeleteModal(true);
   };
 
-  const handleShowDeleteModal = (user) => {
+  const handleShowDeleteModal = user => {
     setSelectedUser(user);
     setShowDeleteModal(true);
   };
@@ -87,37 +109,37 @@ const UserManagement = () => {
             </div>
             <select
               value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
+              onChange={e => setDateFilter(e.target.value)}
               className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
             >
-              <option value="">Date</option>
-              {users.map((user, index) => (
-                <option key={index} value={user.date}>
-                  {user.date}
+              <option value="">Month</option>
+              {uniqueMonths.map((month, index) => (
+                <option key={index} value={month}>
+                  {month}
                 </option>
               ))}
             </select>
             <select
               value={nameFilter}
-              onChange={(e) => setNameFilter(e.target.value)}
+              onChange={e => setNameFilter(e.target.value)}
               className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
             >
-              <option value="">Name</option>
-              {users.map((user, index) => (
-                <option key={index} value={user.firstname}>
-                  {user.firstname}
+              <option value="">First Name</option>
+              {uniqueFirstNames.map((firstName, index) => (
+                <option key={index} value={firstName}>
+                  {firstName}
                 </option>
               ))}
             </select>
             <select
               value={incidentFilter}
-              onChange={(e) => setIncidentFilter(e.target.value)}
+              onChange={e => setIncidentFilter(e.target.value)}
               className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
             >
               <option value="">Incident</option>
-              {users.map((user, index) => (
-                <option key={index} value={user.incident}>
-                  {user.incident}
+              {incidentOptions.map((incident, index) => (
+                <option key={index} value={incident}>
+                  {incident}
                 </option>
               ))}
             </select>
@@ -126,7 +148,7 @@ const UserManagement = () => {
               className="p-2 border-gray-300 rounded-none flex items-center focus:outline-none focus:ring focus:ring-blue-200"
               style={{ height: "40.5px" }}
             >
-              <img src={resetIcon} className="text-red-500 mr-2" />
+              <img src={resetIcon} className="text-red-500 mr-2" alt="Reset Icon" />
               <span className="text-red-500">Reset Filter</span>
             </button>
           </div>
@@ -138,7 +160,7 @@ const UserManagement = () => {
                 className="ml-2 outline-none w-full pr-52"
                 placeholder="Search"
                 value={filter}
-                onChange={(e) => setFilter(e.target.value)}
+                onChange={e => setFilter(e.target.value)}
               />
             </div>
           </div>
