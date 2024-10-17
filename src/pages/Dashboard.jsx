@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // Import axios
+import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 import PendingAlerts from "../assets/dashboard/pending-alerts-icon.svg";
 import TotalAlerts from "../assets/dashboard/total-alerts-icon.svg";
 import TotalReports from "../assets/dashboard/total-report-icon.svg";
@@ -10,16 +12,17 @@ import TrendDown from "../assets/dashboard/trending-down.svg";
 import TrendUp from "../assets/dashboard/trending-up.svg";
 import CarCrashIcon from "../assets/dashboard/Car.svg";
 import FireIcon from "../assets/dashboard/Fire.svg";
-import Image from '../assets/dashboard/accidentimage.png';
+import Image from "../assets/dashboard/accidentimage.png";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [totalUsers, setTotalUsers] = useState(0); // State for total users
+  const [filter, setFilter] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [dateFilter, setDateFilter] = useState('');
-  const [nameFilter, setNameFilter] = useState('');
-  const [incidentFilter, setIncidentFilter] = useState('');
-  const [monthFilter, setMonthFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
+  const [incidentFilter, setIncidentFilter] = useState("");
+  const [monthFilter, setMonthFilter] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const navigate = useNavigate();
@@ -29,53 +32,62 @@ const Dashboard = () => {
       try {
         const mockUsers = [
           {
-            date: '04-23-34',
-            time: '10:00 AM',
-            incident: 'Fire',
-            location: '123 Main St',
-            reporter: 'John Doe',
-            status: 'Pending',
+            date: "04-23-34",
+            time: "10:00 AM",
+            incident: "Fire",
+            location: "123 Main St",
+            reporter: "John Doe",
+            status: "Pending",
             icon: FireIcon,
-            image: Image
+            image: Image,
           },
           {
-            date: '04-27-34',
-            time: '02:00 PM',
-            incident: 'Car Crash',
-            location: '456 Elm St',
-            reporter: 'Jane Smith',
-            status: 'Pending',
+            date: "04-27-34",
+            time: "02:00 PM",
+            incident: "Car Crash",
+            location: "456 Elm St",
+            reporter: "Jane Smith",
+            status: "Pending",
             icon: CarCrashIcon,
-            image: Image
+            image: Image,
           },
         ];
         setUsers(mockUsers);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
+    const fetchTotalUsers = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/users/"); // Fetch total users from the backend
+        setTotalUsers(response.data.length); // Set the total number of users
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
     fetchData();
+    fetchTotalUsers(); // Fetch total users on component mount
   }, []);
 
   useEffect(() => {
-    const filteredData = users.filter(user =>
-      user.incident.toLowerCase().includes(filter.toLowerCase()) &&
-      (dateFilter === '' || user.date === dateFilter) &&
-      (nameFilter === '' || user.reporter === nameFilter) &&
-      (incidentFilter === '' || user.incident === incidentFilter) &&
-      (monthFilter === '' || user.date.startsWith(monthFilter))
+    const filteredData = users.filter(
+      (user) =>
+        user.incident.toLowerCase().includes(filter.toLowerCase()) &&
+        (dateFilter === "" || user.date === dateFilter) &&
+        (nameFilter === "" || user.reporter === nameFilter) &&
+        (incidentFilter === "" || user.incident === incidentFilter) &&
+        (monthFilter === "" || user.date.startsWith(monthFilter))
     );
     setFilteredUsers(filteredData);
   }, [filter, dateFilter, nameFilter, incidentFilter, monthFilter, users]);
 
-  // eslint-disable-next-line no-unused-vars
   const resetFilters = () => {
-    setFilter('');
-    setDateFilter('');
-    setNameFilter('');
-    setIncidentFilter('');
-    setMonthFilter('');
+    setFilter("");
+    setDateFilter("");
+    setNameFilter("");
+    setIncidentFilter("");
+    setMonthFilter("");
   };
 
   const openModal = (user) => {
@@ -96,7 +108,8 @@ const Dashboard = () => {
 
   const toggleStatus = (index) => {
     const updatedUsers = [...users];
-    updatedUsers[index].status = updatedUsers[index].status === 'Pending' ? 'Done' : 'Pending';
+    updatedUsers[index].status =
+      updatedUsers[index].status === "Pending" ? "Done" : "Pending";
     setUsers(updatedUsers);
   };
 
@@ -104,10 +117,35 @@ const Dashboard = () => {
     <div className="p-8">
       <h1 className="font-bold text-3xl text-green-700 mb-8">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <DashboardCard title="Total Reports" count="123" trend="8.5% Up from yesterday" trendIcon={TrendUp} icon={TotalReports} />
-        <DashboardCard title="Total Users" count="456" trend="1.3% Up from past week" trendIcon={TrendUp} icon={TotalUsers} />
-        <DashboardCard title="Total Alerts" count="789" trend="4.3% Down from yesterday" trendIcon={TrendDown} icon={TotalAlerts} />
-        <DashboardCard title="Pending Alerts" count="101" trend="1.8% Up from yesterday" trendIcon={TrendUp} icon={PendingAlerts} />
+        <DashboardCard
+          title="Total Reports"
+          count="123"
+          trend="8.5% Up from yesterday"
+          trendIcon={TrendUp}
+          icon={TotalReports}
+        />
+        <DashboardCard
+          title="Total Users"
+          count={totalUsers}
+          trend="1.3% Up from past week"
+          trendIcon={TrendUp}
+          icon={TotalUsers}
+        />{" "}
+        {/* Display totalUsers */}
+        <DashboardCard
+          title="Total Alerts"
+          count="789"
+          trend="4.3% Down from yesterday"
+          trendIcon={TrendDown}
+          icon={TotalAlerts}
+        />
+        <DashboardCard
+          title="Pending Alerts"
+          count="101"
+          trend="1.8% Up from yesterday"
+          trendIcon={TrendUp}
+          icon={PendingAlerts}
+        />
       </div>
       <div className="p-6 rounded-lg bg-white">
         <div className="flex justify-between items-center mb-4">
@@ -136,7 +174,9 @@ const Dashboard = () => {
           <table className="min-w-full bg-white shadow-md">
             <thead className="bg-gray-100">
               <tr>
-                <th className="py-2 px-4 text-left rounded-l-lg">Incident Report</th>
+                <th className="py-2 px-4 text-left rounded-l-lg">
+                  Incident Report
+                </th>
                 <th className="py-2 px-4 text-left">Location</th>
                 <th className="py-2 px-4 text-left">Date - Time</th>
                 <th className="py-2 px-4 text-left">Reporter</th>
@@ -146,15 +186,35 @@ const Dashboard = () => {
             <tbody>
               {filteredUsers.map((user, index) => (
                 <tr key={index} className="hover:bg-gray-100 border-b-2">
-                  <td className="px-4 py-6 text-left flex items-center" onClick={() => openModal(user)}>
-                    <img src={user.icon} alt={`${user.incident} Icon`} className="w-6 h-6 mr-3"/>
+                  <td
+                    className="px-4 py-6 text-left flex items-center"
+                    onClick={() => openModal(user)}
+                  >
+                    <img
+                      src={user.icon}
+                      alt={`${user.incident} Icon`}
+                      className="w-6 h-6 mr-3"
+                    />
                     {user.incident}
                   </td>
-                  <td className="px-4 py-2 text-left" onClick={() => openModal(user)}>{user.location}</td>
-                  <td className="px-4 py-2 text-left" onClick={() => openModal(user)}>{`${user.date} - ${user.time}`}</td>
-                  <td className="px-4 py-2 text-left" onClick={() => openModal(user)}>{user.reporter}</td>
+                  <td
+                    className="px-4 py-2 text-left"
+                    onClick={() => openModal(user)}
+                  >
+                    {user.location}
+                  </td>
+                  <td
+                    className="px-4 py-2 text-left"
+                    onClick={() => openModal(user)}
+                  >{`${user.date} - ${user.time}`}</td>
+                  <td
+                    className="px-4 py-2 text-left"
+                    onClick={() => openModal(user)}
+                  >
+                    {user.reporter}
+                  </td>
                   <td className="px-4 py-2 text-center relative">
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleStatus(index);
@@ -176,19 +236,32 @@ const Dashboard = () => {
       </div>
 
       {selectedUser && (
-        <Modal 
-          isOpen={modalIsOpen} 
+        <Modal
+          isOpen={modalIsOpen}
           onRequestClose={closeModal}
           className="flex justify-center items-center fixed top-0 left-0 w-full h-full z-50 overflow-auto bg-white bg-opacity-60"
           overlayClassName="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40"
         >
           <div className="bg-red-600 text-white rounded-lg overflow-hidden max-w-md mx-auto my-auto">
             <div className="p-8 text-center">
-              <img src={selectedUser.image} alt={selectedUser.incident} className="w-full rounded-lg object-cover" />
-              <h2 className="pt-3 text-xl font-bold">{selectedUser.incident.toUpperCase()} ACCIDENT</h2>
-              <p className="text-sm font-semibold mt-2">{selectedUser.location}</p>
-              <p className="text-xs font-thin">Reporter: {selectedUser.reporter}</p>
-              <button onClick={viewDetails} className="mt-4 px-36 py-2 bg-white text-red-600 rounded-md font-semibold">
+              <img
+                src={selectedUser.image}
+                alt={selectedUser.incident}
+                className="w-full rounded-lg object-cover"
+              />
+              <h2 className="pt-3 text-xl font-bold">
+                {selectedUser.incident.toUpperCase()} ACCIDENT
+              </h2>
+              <p className="text-sm font-semibold mt-2">
+                {selectedUser.location}
+              </p>
+              <p className="text-xs font-thin">
+                Reporter: {selectedUser.reporter}
+              </p>
+              <button
+                onClick={viewDetails}
+                className="mt-4 px-36 py-2 bg-white text-red-600 rounded-md font-semibold"
+              >
                 View Details
               </button>
             </div>

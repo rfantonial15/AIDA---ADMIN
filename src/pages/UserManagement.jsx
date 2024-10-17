@@ -93,7 +93,7 @@ const UserManagement = () => {
             <select
               value={nameFilter}
               onChange={e => setNameFilter(e.target.value)}
-              className="p-2 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
+              className="p-2 pr-4 border-r border-gray-300 rounded-none focus:outline-none focus:ring focus:ring-blue-200"
             >
               <option value="">First Name</option>
               {uniqueFirstNames.map((firstName, index) => (
