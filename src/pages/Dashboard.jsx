@@ -16,7 +16,8 @@ import Image from "../assets/dashboard/accidentimage.png";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
-  const [totalUsers, setTotalUsers] = useState(0); // State for total users
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalAlerts, setTotalAlerts] = useState(0);
   const [filter, setFilter] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [dateFilter, setDateFilter] = useState("");
@@ -66,8 +67,20 @@ const Dashboard = () => {
         console.error("Error fetching users:", error);
       }
     };
+
+    const fetchTotalAlerts = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/alerts/");
+        setTotalAlerts(response.data.length); // Set total alerts count
+      } catch (error) {
+        console.error("Error fetching alerts:", error);
+      }
+    };
+
+
     fetchData();
-    fetchTotalUsers(); // Fetch total users on component mount
+    fetchTotalUsers();
+    fetchTotalAlerts();
   }, []);
 
   useEffect(() => {
@@ -130,11 +143,10 @@ const Dashboard = () => {
           trend="1.3% Up from past week"
           trendIcon={TrendUp}
           icon={TotalUsers}
-        />{" "}
-        {/* Display totalUsers */}
+        />
         <DashboardCard
           title="Total Alerts"
-          count="789"
+          count={totalAlerts}
           trend="4.3% Down from yesterday"
           trendIcon={TrendDown}
           icon={TotalAlerts}
