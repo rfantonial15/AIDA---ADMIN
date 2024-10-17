@@ -152,7 +152,7 @@ const Dashboard = () => {
           icon={TotalAlerts}
         />
         <DashboardCard
-          title="Pending Alerts"
+          title="Pending Reports"
           count="101"
           trend="1.8% Up from yesterday"
           trendIcon={TrendUp}
